@@ -14,29 +14,30 @@ function ContactInner() {
   const dir = locale === 'en' ? 'ltr' : 'rtl';
   const params = useSearchParams();
   const carpetId = params.get('carpet');
+  const carpetPk = carpetId && /^\d+$/.test(carpetId) ? Number(carpetId) : null;
 
   const [carpetName, setCarpetName] = useState<string | null>(null);
   const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
-  const [state, setState] = useState<'idle' | 'sending' | 'done' | 'error'>('idle');
+  const [state, setState] = useState<'idle' | 'sending' | 'done' | 'error' | 'invalid'>('idle');
 
   useEffect(() => {
-    if (!carpetId) return;
-    getProduct(carpetId)
+    if (carpetPk === null) return;
+    getProduct(carpetPk)
       .then((data) => setCarpetName(data.title))
       .catch(() => setCarpetName(null));
-  }, [carpetId]);
+  }, [carpetPk]);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name || !form.email || !form.message) {
-      setState('error');
+      setState('invalid');
       return;
     }
     setState('sending');
     try {
       await submitInquiry({
         ...form,
-        carpet: carpetId ? Number(carpetId) : null,
+        carpet: carpetPk,
       });
       setState('done');
     } catch {
@@ -119,6 +120,7 @@ function ContactInner() {
               />
             </div>
 
+            {state === 'invalid' && <p className="pub-error">{t('required')}</p>}
             {state === 'error' && <p className="pub-error">{t('error')}</p>}
 
             <button className="pub-btn" type="submit" disabled={state === 'sending'}>

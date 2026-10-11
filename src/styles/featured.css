@@ -1,52 +1,17 @@
 .fs-root {
   --fs-gold: #e8d6a3;
   color: #efe6dd;
-  background:
-    radial-gradient(
-      ellipse 90% 45% at 50% 0%,
-      rgba(232, 214, 163, 0.08),
-      transparent 70%
-    ),
-    linear-gradient(180deg, #2f3b18 0%, #232c12 100%);
 }
-
 .fs-display {
   font-family: var(--font-AKETAB), serif;
 }
-
 .fs-muted {
   opacity: 0.8;
 }
-
-.fs-chapter__glow {
-  position: absolute;
-  top: -8%;
-  left: 50%;
-  width: 120%;
-  height: 55%;
-  transform: translateX(-50%);
-  background: radial-gradient(
-    ellipse at center,
-    rgba(232, 214, 163, 0.16),
-    transparent 70%
-  );
-  pointer-events: none;
-  z-index: 0;
-}
-
 .fs-cta {
-  display: inline-block;
   background: #e8d6a3;
   color: #2f3b18;
   padding: 1rem 2.5rem;
   border-radius: 999px;
   font-weight: bold;
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
-}
-
-.fs-cta:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 1.25rem 2.5rem -1rem rgba(232, 214, 163, 0.6);
 }

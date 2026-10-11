@@ -74,11 +74,18 @@ class CarpetWriteSerializer(serializers.ModelSerializer):
 
     def _fill_defaults(self, attrs):
         for field in ('title', 'description', 'origin', 'material', 'pattern'):
+            translations = (
+                attrs.get(f'{field}_ar'),
+                attrs.get(f'{field}_fa'),
+                attrs.get(f'{field}_en'),
+            )
+            # Only derive the base field when it (or one of its translations)
+            # is actually part of this request, so partial updates don't wipe
+            # the default-language value.
+            if field not in attrs and all(value is None for value in translations):
+                continue
             if not attrs.get(field):
-                attrs[field] = (
-                    attrs.get(f'{field}_ar') or attrs.get(f'{field}_fa')
-                    or attrs.get(f'{field}_en') or ''
-                )
+                attrs[field] = next((value for value in translations if value), '')
         return attrs
 
     def create(self, validated_data):

@@ -34,7 +34,8 @@ export default function Header(): React.JSX.Element {
   ];
 
   const handleLanguageChange = (newLocale: string) => {
-    router.replace(pathname, { locale: newLocale as 'ar' | 'fa' | 'en' });
+    const query = typeof window !== 'undefined' ? window.location.search : '';
+    router.replace(`${pathname}${query}`, { locale: newLocale as 'ar' | 'fa' | 'en' });
   };
 
   const linkStyle = { color: BURGUNDY };

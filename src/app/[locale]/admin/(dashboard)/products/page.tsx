@@ -53,6 +53,7 @@ export default function AdminProductsPage() {
         <div className="ad-toolbar__group">
           <input
             className="ad-input ad-search"
+            aria-label={t('products.search')}
             placeholder={t('products.search')}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -74,12 +75,12 @@ export default function AdminProductsPage() {
           <table className="ad-table">
             <thead>
               <tr>
-                <th>{t('products.image')}</th>
-                <th>{t('products.name')}</th>
-                <th>{t('products.category')}</th>
-                <th>{t('products.price')}</th>
-                <th>{t('products.stock')}</th>
-                <th style={{ textAlign: 'end' }}>{t('products.actions')}</th>
+                <th scope="col">{t('products.image')}</th>
+                <th scope="col">{t('products.name')}</th>
+                <th scope="col">{t('products.category')}</th>
+                <th scope="col">{t('products.price')}</th>
+                <th scope="col">{t('products.stock')}</th>
+                <th scope="col" style={{ textAlign: 'end' }}>{t('products.actions')}</th>
               </tr>
             </thead>
             <tbody>
@@ -105,16 +106,18 @@ export default function AdminProductsPage() {
                     <div className="ad-table__row-actions">
                       <Link
                         href={`/admin/products/${row.id}/edit`}
+                        aria-label={t('common.edit')}
                         className="ad-btn ad-btn--ghost ad-btn--sm"
                       >
-                        <Pencil size={14} />
+                        <Pencil size={14} aria-hidden />
                       </Link>
                       <button
                         type="button"
+                        aria-label={t('common.delete')}
                         className="ad-btn ad-btn--danger ad-btn--sm"
                         onClick={() => onDelete(row.id)}
                       >
-                        <Trash2 size={14} />
+                        <Trash2 size={14} aria-hidden />
                       </button>
                     </div>
                   </td>

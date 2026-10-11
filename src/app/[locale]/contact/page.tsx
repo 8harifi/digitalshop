@@ -76,8 +76,9 @@ function ContactInner() {
           <form className="pub-card" onSubmit={submit} style={{ display: 'grid', gap: '1rem' }}>
             <div className="pub-grid-2">
               <div className="pub-field">
-                <label className="pub-label">{t('name')}</label>
+                <label className="pub-label" htmlFor="contact-name">{t('name')}</label>
                 <input
+                  id="contact-name"
                   className="pub-input"
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -85,8 +86,9 @@ function ContactInner() {
                 />
               </div>
               <div className="pub-field">
-                <label className="pub-label">{t('email')}</label>
+                <label className="pub-label" htmlFor="contact-email">{t('email')}</label>
                 <input
+                  id="contact-email"
                   type="email"
                   className="pub-input"
                   value={form.email}
@@ -95,8 +97,9 @@ function ContactInner() {
                 />
               </div>
               <div className="pub-field">
-                <label className="pub-label">{t('phone')}</label>
+                <label className="pub-label" htmlFor="contact-phone">{t('phone')}</label>
                 <input
+                  id="contact-phone"
                   className="pub-input"
                   value={form.phone}
                   onChange={(e) => setForm({ ...form, phone: e.target.value })}
@@ -109,8 +112,9 @@ function ContactInner() {
             </div>
 
             <div className="pub-field">
-              <label className="pub-label">{t('message')}</label>
+              <label className="pub-label" htmlFor="contact-message">{t('message')}</label>
               <textarea
+                id="contact-message"
                 className="pub-textarea"
                 value={form.message}
                 onChange={(e) => setForm({ ...form, message: e.target.value })}

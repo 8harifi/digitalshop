@@ -56,7 +56,7 @@ export default function Header(): React.JSX.Element {
         <button
           type="button"
           className="p-1 lg:hidden text-[#6B1F2E]"
-          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          aria-label={menuOpen ? t('closeMenu') : t('openMenu')}
           onClick={() => setMenuOpen((v) => !v)}
         >
           {menuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -82,7 +82,7 @@ export default function Header(): React.JSX.Element {
         <Link href="/" className="flex items-center justify-center">
           <Image
             src="/assets/toplpgo.png"
-            alt="Logo"
+            alt={t('logoAlt')}
             width={180}
             height={80}
             priority
@@ -93,10 +93,11 @@ export default function Header(): React.JSX.Element {
         {/* Language & Tools */}
         <div className="hidden flex-1 items-center justify-end gap-6 lg:flex">
           <div className="flex items-center gap-3 border-r border-burgundy/20 pr-6 mr-6">
-            <Globe size={16} />
+            <Globe size={16} aria-hidden />
             {languages.map((lang) => (
               <button
                 key={lang.code}
+                type="button"
                 onClick={() => handleLanguageChange(lang.code)}
                 className={`text-sm font-semibold transition-colors ${locale === lang.code ? 'underline underline-offset-4' : 'opacity-60 hover:opacity-100'}`}
                 style={linkStyle}
@@ -162,6 +163,7 @@ export default function Header(): React.JSX.Element {
                 {languages.map((lang) => (
                   <button
                     key={lang.code}
+                    type="button"
                     onClick={() => {
                       handleLanguageChange(lang.code);
                       setMenuOpen(false);

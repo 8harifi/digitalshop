@@ -51,6 +51,7 @@ export default function AdminInquiriesPage() {
           <h3 className="ad-card__title ad-display">{t('inquiries.title')}</h3>
           <input
             className="ad-input ad-search"
+            aria-label={t('inquiries.search')}
             placeholder={t('inquiries.search')}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -67,12 +68,12 @@ export default function AdminInquiriesPage() {
             <table className="ad-table">
               <thead>
                 <tr>
-                  <th>{t('inquiries.name')}</th>
-                  <th>{t('inquiries.email')}</th>
-                  <th>{t('inquiries.phone')}</th>
-                  <th>{t('inquiries.carpet')}</th>
-                  <th>{t('inquiries.date')}</th>
-                  <th style={{ textAlign: 'end' }}>{t('inquiries.actions')}</th>
+                  <th scope="col">{t('inquiries.name')}</th>
+                  <th scope="col">{t('inquiries.email')}</th>
+                  <th scope="col">{t('inquiries.phone')}</th>
+                  <th scope="col">{t('inquiries.carpet')}</th>
+                  <th scope="col">{t('inquiries.date')}</th>
+                  <th scope="col" style={{ textAlign: 'end' }}>{t('inquiries.actions')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -89,17 +90,19 @@ export default function AdminInquiriesPage() {
                       <div className="ad-table__row-actions">
                         <button
                           type="button"
+                          aria-label={t('inquiries.view')}
                           className="ad-btn ad-btn--ghost ad-btn--sm"
                           onClick={() => setViewing(row)}
                         >
-                          <Eye size={14} />
+                          <Eye size={14} aria-hidden />
                         </button>
                         <button
                           type="button"
+                          aria-label={t('common.delete')}
                           className="ad-btn ad-btn--danger ad-btn--sm"
                           onClick={() => remove(row.id)}
                         >
-                          <Trash2 size={14} />
+                          <Trash2 size={14} aria-hidden />
                         </button>
                       </div>
                     </td>
@@ -112,7 +115,7 @@ export default function AdminInquiriesPage() {
       </section>
 
       {viewing && (
-        <div className="ad-modal" onClick={() => setViewing(null)}>
+        <div className="ad-modal" role="dialog" aria-modal="true" aria-label={viewing.name} onClick={() => setViewing(null)}>
           <div className="ad-modal__panel" onClick={(e) => e.stopPropagation()}>
             <h3 className="ad-card__title ad-display" style={{ marginBottom: '1rem' }}>
               {viewing.name}

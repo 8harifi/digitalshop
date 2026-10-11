@@ -90,12 +90,12 @@ export default function AdminUsersPage() {
             <table className="ad-table">
               <thead>
                 <tr>
-                  <th>{t('users.username')}</th>
-                  <th>{t('users.email')}</th>
-                  <th>{t('users.staff')}</th>
-                  <th>{t('users.active')}</th>
-                  <th>{t('users.lastLogin')}</th>
-                  <th style={{ textAlign: 'end' }}>{t('users.actions')}</th>
+                  <th scope="col">{t('users.username')}</th>
+                  <th scope="col">{t('users.email')}</th>
+                  <th scope="col">{t('users.staff')}</th>
+                  <th scope="col">{t('users.active')}</th>
+                  <th scope="col">{t('users.lastLogin')}</th>
+                  <th scope="col" style={{ textAlign: 'end' }}>{t('users.actions')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -115,6 +115,8 @@ export default function AdminUsersPage() {
                     <td>
                       <button
                         type="button"
+                        aria-pressed={row.is_active}
+                        aria-label={`${t('users.active')}: ${row.username}`}
                         className={`ad-badge ad-badge--${row.is_active ? 'available' : 'sold'}`}
                         style={{ cursor: 'pointer' }}
                         onClick={() => toggle(row)}
@@ -130,11 +132,12 @@ export default function AdminUsersPage() {
                       <div className="ad-table__row-actions">
                         <button
                           type="button"
+                          aria-label={t('common.delete')}
                           className="ad-btn ad-btn--danger ad-btn--sm"
                           onClick={() => remove(row.id)}
                           disabled={row.id === me?.id}
                         >
-                          <Trash2 size={14} />
+                          <Trash2 size={14} aria-hidden />
                         </button>
                       </div>
                     </td>
@@ -147,15 +150,16 @@ export default function AdminUsersPage() {
       </section>
 
       {creating && (
-        <div className="ad-modal" onClick={() => setCreating(false)}>
+        <div className="ad-modal" role="dialog" aria-modal="true" aria-label={t('users.create')} onClick={() => setCreating(false)}>
           <form className="ad-modal__panel" onClick={(e) => e.stopPropagation()} onSubmit={create}>
             <h3 className="ad-card__title ad-display" style={{ marginBottom: '1rem' }}>
               {t('users.create')}
             </h3>
             <div className="ad-grid-2">
               <div className="ad-field">
-                <label className="ad-label">{t('users.username')}</label>
+                <label className="ad-label" htmlFor="new-user-username">{t('users.username')}</label>
                 <input
+                  id="new-user-username"
                   className="ad-input"
                   value={form.username}
                   onChange={(e) => setForm({ ...form, username: e.target.value })}
@@ -163,8 +167,9 @@ export default function AdminUsersPage() {
                 />
               </div>
               <div className="ad-field">
-                <label className="ad-label">{t('users.email')}</label>
+                <label className="ad-label" htmlFor="new-user-email">{t('users.email')}</label>
                 <input
+                  id="new-user-email"
                   type="email"
                   className="ad-input"
                   value={form.email}
@@ -172,8 +177,9 @@ export default function AdminUsersPage() {
                 />
               </div>
               <div className="ad-field">
-                <label className="ad-label">{t('users.password')}</label>
+                <label className="ad-label" htmlFor="new-user-password">{t('users.password')}</label>
                 <input
+                  id="new-user-password"
                   type="password"
                   className="ad-input"
                   value={form.password}
@@ -181,8 +187,9 @@ export default function AdminUsersPage() {
                 />
               </div>
               <div className="ad-field">
-                <label className="ad-label">{t('users.staff')}</label>
+                <label className="ad-label" htmlFor="new-user-staff">{t('users.staff')}</label>
                 <select
+                  id="new-user-staff"
                   className="ad-select"
                   value={String(form.is_staff)}
                   onChange={(e) => setForm({ ...form, is_staff: e.target.value === 'true' })}

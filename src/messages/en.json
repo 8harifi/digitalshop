@@ -11,6 +11,9 @@
     "reserved": "Reserved",
     "description": "Exquisite handmade rugs and carpets from the heart of Persia.",
     "search": "Search",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "logoAlt": "Kerman House",
     "cart": "Cart",
     "total": "Total",
     "quantity": "Qty",
@@ -54,7 +57,10 @@
     "free": "Free",
     "checkout": "Proceed to Checkout",
     "item": "item",
-    "items": "items"
+    "items": "items",
+    "increase": "Increase quantity",
+    "decrease": "Decrease quantity",
+    "remove": "Remove item"
   },
   "Search": {
     "title": "Search the Collection",

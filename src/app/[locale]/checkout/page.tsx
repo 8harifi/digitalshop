@@ -108,15 +108,16 @@ export default function CheckoutPage() {
                       {formatPrice(item.price, locale)}
                     </p>
                     <div className="pub-qty">
-                      <button type="button" onClick={() => setQty(item.id, item.qty - 1)}>
+                      <button type="button" aria-label={cart('decrease')} onClick={() => setQty(item.id, item.qty - 1)}>
                         −
                       </button>
                       <span>{item.qty}</span>
-                      <button type="button" onClick={() => setQty(item.id, item.qty + 1)}>
+                      <button type="button" aria-label={cart('increase')} onClick={() => setQty(item.id, item.qty + 1)}>
                         +
                       </button>
                       <button
                         type="button"
+                        aria-label={cart('remove')}
                         className="pub-muted"
                         style={{ border: 'none', background: 'none', cursor: 'pointer', textDecoration: 'underline' }}
                         onClick={() => remove(item.id)}
@@ -139,8 +140,9 @@ export default function CheckoutPage() {
                 {t('contactInfo')}
               </h2>
               <div className="pub-field">
-                <label className="pub-label">{t('name')}</label>
+                <label className="pub-label" htmlFor="checkout-name">{t('name')}</label>
                 <input
+                  id="checkout-name"
                   className="pub-input"
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -148,8 +150,9 @@ export default function CheckoutPage() {
                 />
               </div>
               <div className="pub-field">
-                <label className="pub-label">{t('email')}</label>
+                <label className="pub-label" htmlFor="checkout-email">{t('email')}</label>
                 <input
+                  id="checkout-email"
                   type="email"
                   className="pub-input"
                   value={form.email}
@@ -158,8 +161,9 @@ export default function CheckoutPage() {
                 />
               </div>
               <div className="pub-field">
-                <label className="pub-label">{t('phone')}</label>
+                <label className="pub-label" htmlFor="checkout-phone">{t('phone')}</label>
                 <input
+                  id="checkout-phone"
                   className="pub-input"
                   value={form.phone}
                   onChange={(e) => setForm({ ...form, phone: e.target.value })}
@@ -173,17 +177,17 @@ export default function CheckoutPage() {
                 {t('testNotice')}
               </p>
               <div className="pub-field">
-                <label className="pub-label">{t('cardNumber')}</label>
-                <input className="pub-input" placeholder="4242 4242 4242 4242" disabled />
+                <label className="pub-label" htmlFor="checkout-card">{t('cardNumber')}</label>
+                <input id="checkout-card" className="pub-input" placeholder="4242 4242 4242 4242" disabled />
               </div>
               <div className="pub-grid-2">
                 <div className="pub-field">
-                  <label className="pub-label">{t('expiry')}</label>
-                  <input className="pub-input" placeholder="12/34" disabled />
+                  <label className="pub-label" htmlFor="checkout-expiry">{t('expiry')}</label>
+                  <input id="checkout-expiry" className="pub-input" placeholder="12/34" disabled />
                 </div>
                 <div className="pub-field">
-                  <label className="pub-label">{t('cvc')}</label>
-                  <input className="pub-input" placeholder="123" disabled />
+                  <label className="pub-label" htmlFor="checkout-cvc">{t('cvc')}</label>
+                  <input id="checkout-cvc" className="pub-input" placeholder="123" disabled />
                 </div>
               </div>
 

@@ -107,11 +107,11 @@ export default function AdminCategoriesPage() {
             <table className="ad-table">
               <thead>
                 <tr>
-                  <th>AR</th>
-                  <th>FA</th>
-                  <th>EN</th>
-                  <th>{t('categories.slug')}</th>
-                  <th style={{ textAlign: 'end' }}>{t('categories.actions')}</th>
+                  <th scope="col">AR</th>
+                  <th scope="col">FA</th>
+                  <th scope="col">EN</th>
+                  <th scope="col">{t('categories.slug')}</th>
+                  <th scope="col" style={{ textAlign: 'end' }}>{t('categories.actions')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -125,17 +125,19 @@ export default function AdminCategoriesPage() {
                       <div className="ad-table__row-actions">
                         <button
                           type="button"
+                          aria-label={t('common.edit')}
                           className="ad-btn ad-btn--ghost ad-btn--sm"
                           onClick={() => openEdit(cat)}
                         >
-                          <Pencil size={14} />
+                          <Pencil size={14} aria-hidden />
                         </button>
                         <button
                           type="button"
+                          aria-label={t('common.delete')}
                           className="ad-btn ad-btn--danger ad-btn--sm"
                           onClick={() => remove(cat.id)}
                         >
-                          <Trash2 size={14} />
+                          <Trash2 size={14} aria-hidden />
                         </button>
                       </div>
                     </td>
@@ -148,7 +150,7 @@ export default function AdminCategoriesPage() {
       </section>
 
       {editing && (
-        <div className="ad-modal" onClick={() => setEditing(null)}>
+        <div className="ad-modal" role="dialog" aria-modal="true" aria-label={editing === 'new' ? t('categories.new') : t('categories.edit')} onClick={() => setEditing(null)}>
           <form className="ad-modal__panel" onClick={(e) => e.stopPropagation()} onSubmit={save}>
             <h3 className="ad-card__title ad-display" style={{ marginBottom: '1rem' }}>
               {editing === 'new' ? t('categories.new') : t('categories.edit')}

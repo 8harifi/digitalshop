@@ -62,6 +62,8 @@ function RugGallery({ images, title }: { images: RugDetail['images']; title: str
             key={img.id}
             type="button"
             onClick={() => setActiveIndex(i)}
+            aria-label={`${title} ${i + 1}`}
+            aria-current={i === activeIndex}
             className={`fs-gallery__thumb ${i === activeIndex ? "is-active" : ""}`}
           >
             <Image

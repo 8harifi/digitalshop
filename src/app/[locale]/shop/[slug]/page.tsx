@@ -12,7 +12,6 @@ import {
   useReducedMotion,
   useScroll,
   useTransform,
-  cubicBezier,
 } from "framer-motion";
 import { useTranslations, useLocale } from 'next-intl';
 import { getCarpet } from '@/lib/api';
@@ -41,8 +40,6 @@ type RugDetail = {
   category: { id: number; name: string };
   stock_status: "available" | "reserved" | "sold";
 };
-
-const softEase = cubicBezier(0.4, 0, 0.2, 1);
 
 /* ============================================================
    Gallery

@@ -3,8 +3,9 @@
 import React from "react";
 import Image from "next/image";
 import { motion, type Variants } from "framer-motion";
-import heroRug from "../../public/images/pic1.jpg";
 import { useTranslations } from 'next-intl';
+
+const heroRug = "/images/pic1.jpg";
 
 /* پالت جدید: کرم روشن + زرشکی */
 const CREAM = "#F5EBDC";
@@ -72,23 +73,6 @@ function GeometricOrnament({
   );
 }
 
-function Sparkle({ className }: { className?: string }): React.JSX.Element {
-  return (
-    <motion.svg
-      viewBox="0 0 24 24"
-      className={className}
-      aria-hidden="true"
-      animate={{ opacity: [0.4, 1, 0.4], scale: [0.9, 1.12, 0.9] }}
-      transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
-    >
-      <path
-        d="M12 1.2 L13.55 10.45 L22.8 12 L13.55 13.55 L12 22.8 L10.45 13.55 L1.2 12 L10.45 10.45 Z"
-        fill={BURGUNDY}
-      />
-    </motion.svg>
-  );
-}
-
 export default function HeroSection(): React.JSX.Element {
   const t = useTranslations('Common');
 
@@ -117,7 +101,7 @@ export default function HeroSection(): React.JSX.Element {
           >
             <Image
               src={heroRug}
-              alt="Handmade Persian rugs"
+              alt={t('title')}
               fill
               priority
               sizes="100vw"
@@ -161,7 +145,7 @@ export default function HeroSection(): React.JSX.Element {
                 className="mt-6 max-w-4xl text-base font-light leading-relaxed tracking-wide sm:text-lg md:text-xl"
                 style={{ color: "rgba(245, 235, 220, 0.9)" }}
               >
-                {t('shop')}
+                {t('description')}
               </motion.p>
             </motion.div>
           </div>

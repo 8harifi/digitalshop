@@ -245,5 +245,19 @@
       "no": "No",
       "search": "Search"
     }
+  },
+  "Meta": {
+    "title": "Kerman House · Persian Carpet Art",
+    "description": "Handmade Persian carpets — heritage, collection and private viewings."
+  },
+  "NotFound": {
+    "title": "Page not found",
+    "message": "The page you are looking for doesn't exist.",
+    "home": "Back to home"
+  },
+  "Error": {
+    "title": "Something went wrong",
+    "message": "An unexpected error occurred.",
+    "retry": "Try again"
   }
 }

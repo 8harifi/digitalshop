@@ -1,5 +1,5 @@
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
+import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import { locales } from '@/i18n/config';
 import { CartProvider } from '@/lib/cart';
 import { notFound } from 'next/navigation';
@@ -82,10 +82,25 @@ const cinzel = localFont({
   display: 'swap',
 });
 
-export const metadata: Metadata = {
-  title: 'Kerman House · Persian Carpet Art',
-  description: 'Handmade Persian carpets — heritage, collection and private viewings.',
-};
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'Meta' });
+  return {
+    title: t('title'),
+    description: t('description'),
+    alternates: {
+      languages: Object.fromEntries(locales.map((l) => [l, `/${l}`])),
+    },
+  };
+}
 
 export default async function LocaleLayout({
   children,
@@ -97,6 +112,7 @@ export default async function LocaleLayout({
   const { locale } = await params;
   if (!locales.includes(locale)) notFound();
 
+  setRequestLocale(locale);
   const messages = await getMessages();
   const dir = locale === 'en' ? 'ltr' : 'rtl';
 

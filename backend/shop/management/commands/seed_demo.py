@@ -1,3 +1,4 @@
+import os
 import shutil
 from pathlib import Path
 
@@ -9,7 +10,8 @@ from shop.models import Carpet, CarpetImage, Category, Inquiry
 
 User = get_user_model()
 
-ASSETS_DIR = Path(settings.BASE_DIR).parent / 'public' / 'assets'
+DEFAULT_ASSETS_DIR = Path(settings.BASE_DIR).parent / 'public' / 'assets'
+ASSETS_DIR = Path(os.environ.get('SEED_ASSETS_DIR', DEFAULT_ASSETS_DIR))
 
 CATEGORIES = [
     {'slug': 'tabriz', 'ar': 'تبريز', 'fa': 'تبریز', 'en': 'Tabriz'},
@@ -109,19 +111,29 @@ class Command(BaseCommand):
         self._seed_carpets(categories)
         self._seed_inquiries()
         self.stdout.write(self.style.SUCCESS('Demo data seeded.'))
-        self.stdout.write('  Admin login: admin / admin12345')
 
     def _seed_admin(self):
-        user, _ = User.objects.get_or_create(
-            username='admin', defaults={'email': 'admin@example.com'}
+        password = os.environ.get('DJANGO_SEED_ADMIN_PASSWORD', 'admin12345')
+        user, created = User.objects.get_or_create(
+            username='admin',
+            defaults={
+                'email': 'admin@example.com',
+                'is_staff': True,
+                'is_superuser': True,
+                'is_active': True,
+            },
         )
-        user.email = user.email or 'admin@example.com'
-        user.is_staff = True
-        user.is_superuser = True
-        user.is_active = True
-        user.set_password('admin12345')
-        user.save()
-        self.stdout.write('Admin user "admin" ready (password: admin12345).')
+        if created:
+            user.set_password(password)
+            user.save()
+            self.stdout.write(
+                self.style.WARNING(
+                    f'Created admin user "admin" (password: {password}). '
+                    'Change it before deploying.'
+                )
+            )
+        else:
+            self.stdout.write('Admin user "admin" already exists; left unchanged.')
 
     def _seed_categories(self):
         result = {}

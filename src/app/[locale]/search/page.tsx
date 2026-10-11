@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 
 import Header from '@/components/Header';
-import { Link } from '@/i18n/navigation';
+import { Link, useRouter } from '@/i18n/navigation';
 import { API_URL, getCarpets } from '@/lib/api';
 import { formatPrice } from '@/lib/format';
 import '@/styles/public.css';
@@ -24,35 +24,50 @@ const imgSrc = (path: string) => (path.startsWith('http') ? path : `${origin}${p
 
 function SearchInner() {
   const t = useTranslations('Search');
+  const ct = useTranslations('Common');
   const locale = useLocale();
   const dir = locale === 'en' ? 'ltr' : 'rtl';
+  const router = useRouter();
   const params = useSearchParams();
+  const initialTerm = params.get('search') ?? '';
 
-  const [term, setTerm] = useState(params.get('search') ?? '');
+  const [term, setTerm] = useState(initialTerm);
   const [results, setResults] = useState<Rug[]>([]);
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
+  const [errored, setErrored] = useState(false);
 
   const run = useCallback(async (value: string) => {
     const q = value.trim();
+    if (!q) {
+      setResults([]);
+      setSearched(false);
+      setErrored(false);
+      return;
+    }
     setLoading(true);
     setSearched(true);
+    setErrored(false);
     try {
-      const data = await getCarpets(q ? { search: q } : {});
+      const data = await getCarpets({ search: q });
       setResults(data);
+    } catch {
+      setResults([]);
+      setErrored(true);
     } finally {
       setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    const initial = params.get('search');
-    if (initial) run(initial);
-  }, [params, run]);
+    if (initialTerm) run(initialTerm);
+  }, [initialTerm, run]);
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    run(term);
+    const q = term.trim();
+    router.replace(q ? `/search?search=${encodeURIComponent(q)}` : '/search');
+    run(q);
   };
 
   return (
@@ -80,7 +95,11 @@ function SearchInner() {
         <div style={{ marginTop: '1.5rem' }}>
           {loading ? (
             <p className="pub-muted" style={{ textAlign: 'center', padding: '3rem 0' }}>
-              …
+              {ct('loading')}
+            </p>
+          ) : errored ? (
+            <p className="pub-error" style={{ textAlign: 'center', padding: '3rem 0' }}>
+              {t('error')}
             </p>
           ) : !searched ? (
             <p className="pub-muted" style={{ textAlign: 'center', padding: '2rem 0' }}>

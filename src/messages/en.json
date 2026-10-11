@@ -62,7 +62,8 @@
     "button": "Search",
     "results": "{count} results",
     "noResults": "No rugs matched your search.",
-    "hint": "Type a keyword and press Enter."
+    "hint": "Type a keyword and press Enter.",
+    "error": "Something went wrong. Please try again."
   },
   "Contact": {
     "title": "Contact & Consultation",

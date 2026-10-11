@@ -1,0 +1,117 @@
+/* Landing-page accent styles */
+
+.values-strip {
+  background: #0c0a08;
+  color: #f2e8d5;
+  padding: clamp(2.5rem, 6vw, 4rem) 1.5rem;
+  border-top: 1px solid rgba(212, 180, 131, 0.22);
+  border-bottom: 1px solid rgba(212, 180, 131, 0.22);
+}
+
+.values-strip__inner {
+  max-width: 64rem;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: clamp(1.5rem, 4vw, 3rem);
+  text-align: center;
+}
+
+.values-strip__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.values-strip__icon {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: 0.5rem;
+  color: #d4b483;
+  border: 1px solid rgba(212, 180, 131, 0.4);
+  border-radius: 999px;
+}
+
+.values-strip__title {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.2rem;
+  color: #f2e8d5;
+}
+
+.values-strip__text {
+  font-size: 0.95rem;
+  color: rgba(242, 232, 213, 0.66);
+}
+
+.hero-cta {
+  display: inline-block;
+  padding: 0.85rem 2.1rem;
+  border-radius: 999px;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease,
+    color 0.25s ease;
+}
+
+.hero-cta:hover {
+  transform: translateY(-2px);
+}
+
+.hero-cta--solid {
+  background: #d4b483;
+  color: #2f3b18;
+  font-weight: 600;
+}
+
+.hero-cta--ghost {
+  border: 1px solid rgba(245, 235, 220, 0.6);
+  color: #f5ebdc;
+}
+
+.hero-cta--ghost:hover {
+  background: rgba(245, 235, 220, 0.12);
+}
+
+.hero-scroll {
+  position: absolute;
+  bottom: 1.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+}
+
+.hero-scroll__line {
+  display: block;
+  width: 1px;
+  height: 3.25rem;
+  background: linear-gradient(
+    180deg,
+    rgba(245, 235, 220, 0) 0%,
+    rgba(245, 235, 220, 0.85) 100%
+  );
+  animation: hero-scroll-pulse 2.2s ease-in-out infinite;
+  transform-origin: top;
+}
+
+@keyframes hero-scroll-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scaleY(0.6);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-scroll__line {
+    animation: none;
+  }
+}

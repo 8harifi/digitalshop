@@ -256,6 +256,14 @@
     "title": "Kerman House · Persian Carpet Art",
     "description": "Handmade Persian carpets — heritage, collection and private viewings."
   },
+  "Values": {
+    "handmade": "Hand-knotted",
+    "handmadeDesc": "Woven by master artisans",
+    "authentic": "Certified authentic",
+    "authenticDesc": "Sourced direct from the weavers",
+    "delivery": "Worldwide delivery",
+    "deliveryDesc": "Insured and fully tracked"
+  },
   "NotFound": {
     "title": "Page not found",
     "message": "The page you are looking for doesn't exist.",

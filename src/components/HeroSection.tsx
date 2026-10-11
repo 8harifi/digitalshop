@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import { motion, type Variants } from "framer-motion";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 
 const heroRug = "/images/pic1.jpg";
 
@@ -146,8 +147,30 @@ export default function HeroSection(): React.JSX.Element {
               >
                 {t("description")}
               </motion.p>
+
+              <motion.div
+                variants={itemVariants}
+                className="mt-9 flex flex-wrap items-center justify-center gap-4"
+              >
+                <Link href="/shop" className="hero-cta hero-cta--solid">
+                  {t("shop")}
+                </Link>
+                <Link href="/contact" className="hero-cta hero-cta--ghost">
+                  {t("contact")}
+                </Link>
+              </motion.div>
             </motion.div>
           </div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.5, duration: 0.8 }}
+            className="hero-scroll"
+            aria-hidden="true"
+          >
+            <span className="hero-scroll__line" />
+          </motion.div>
         </div>
       </div>
     </section>

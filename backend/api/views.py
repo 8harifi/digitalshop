@@ -58,16 +58,20 @@ class CarpetViewSet(viewsets.ModelViewSet):
     )
     def images(self, request, pk=None):
         carpet = self.get_object()
-        image = request.FILES.get('image')
-        if not image:
+        if not request.FILES.get('image'):
             return Response({'detail': 'image file is required'}, status=status.HTTP_400_BAD_REQUEST)
 
         is_primary = str(request.data.get('is_primary', '')).lower() in ('1', 'true', 'yes')
+        payload = request.data.copy()
+        payload['carpet'] = carpet.pk
+        serializer = CarpetImageSerializer(data=payload, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+
         with transaction.atomic():
             if is_primary or not carpet.images.exists():
-                is_primary = True
                 carpet.images.update(is_primary=False)
-            img = CarpetImage.objects.create(carpet=carpet, image=image, is_primary=is_primary)
+                serializer.validated_data['is_primary'] = True
+            img = serializer.save()
         return Response(
             CarpetImageSerializer(img, context={'request': request}).data,
             status=status.HTTP_201_CREATED,

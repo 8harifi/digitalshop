@@ -5,6 +5,9 @@ from shop.models import Category, Carpet, CarpetImage, Inquiry
 
 User = get_user_model()
 
+ALLOWED_IMAGE_TYPES = {'image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif'}
+MAX_IMAGE_BYTES = 8 * 1024 * 1024
+
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -13,6 +16,14 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class CarpetImageSerializer(serializers.ModelSerializer):
+    def validate_image(self, image):
+        if image.size > MAX_IMAGE_BYTES:
+            raise serializers.ValidationError('Image must be 8 MB or smaller.')
+        content_type = getattr(image, 'content_type', '')
+        if content_type and content_type not in ALLOWED_IMAGE_TYPES:
+            raise serializers.ValidationError('Unsupported image type.')
+        return image
+
     class Meta:
         model = CarpetImage
         fields = ('id', 'carpet', 'image', 'is_primary')

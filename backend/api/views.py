@@ -4,13 +4,14 @@ from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, generics, status, viewsets
 from rest_framework.decorators import action
+from rest_framework.exceptions import ValidationError
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
 from shop.models import Carpet, CarpetImage, Category, Inquiry
 
-from .permissions import PublicCreateStaffRead, ReadOnlyOrAdmin
+from .permissions import IsSuperUser, PublicCreateStaffRead, ReadOnlyOrAdmin
 from .serializers import (
     CarpetDetailSerializer,
     CarpetImageSerializer,
@@ -135,14 +136,19 @@ class InquiryViewSet(viewsets.ModelViewSet):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsSuperUser]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ['is_staff', 'is_active']
     search_fields = ['username', 'email', 'first_name', 'last_name']
 
+    def perform_destroy(self, instance):
+        if instance == self.request.user:
+            raise ValidationError('You cannot delete your own account.')
+        instance.delete()
+
 
 class MeView(generics.GenericAPIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         return Response(UserSerializer(request.user).data)

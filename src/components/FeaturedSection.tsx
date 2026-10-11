@@ -14,6 +14,7 @@ import {
 } from "framer-motion";
 import { Link } from '@/i18n/navigation';
 import { useTranslations, useLocale } from 'next-intl';
+import '@/styles/featured.css';
 
 type CarpetStory = {
   image: string;
@@ -110,7 +111,6 @@ export default function FeaturedSection() {
 
   return (
     <section className="fs-root min-h-screen bg-olive">
-       <style dangerouslySetInnerHTML={{ __html: styles }} />
        <div className="py-20 text-center">
           <h2 className="fs-display text-5xl sm:text-7xl">{t('filter')}</h2>
        </div>
@@ -122,9 +122,3 @@ export default function FeaturedSection() {
   );
 }
 
-const styles = `
-  .fs-root { --fs-gold: #E8D6A3; color: #EFE6DD; }
-  .fs-display { font-family: var(--font-AKETAB), serif; }
-  .fs-muted { opacity: 0.8; }
-  .fs-cta { background: #E8D6A3; color: #2F3B18; padding: 1rem 2.5rem; border-radius: 999px; font-weight: bold; }
-`;

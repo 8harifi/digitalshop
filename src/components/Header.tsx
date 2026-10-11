@@ -1,34 +1,31 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";                                    // ← اضافه شد
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, Search, X } from "lucide-react";
-
+import Image from "next/image";
 /* پالت جدید: کرم روشن + زرشکی */
-const CREAM = "#F5EBDC"; /* پس‌زمینه‌ی کرم روشن */
-const CREAM_SOFT = "#F5EBDC"; /* کرم کمی تیره‌تر برای حاشیه‌ها */
-const BURGUNDY = "#6B1F2E"; /* زرشکی پررنگ برای متن */
-const BURGUNDY_DEEP = "#4A0F1C"; /* زرشکی تیره‌تر برای هاور */
+const CREAM = "#F5EBDC";
+const CREAM_SOFT = "#F5EBDC";
+const BURGUNDY = "#6B1F2E";
+const BURGUNDY_DEEP = "#4A0F1C";
 
 const leftNav = [
   { href: "#about", label: "درباره ما" },
   { href: "#history", label: "داستان ما" },
-  { href: "#products", label: "محصولات" },
+  { href: "/shop", label: "محصولات" },                          // ← اینجا
 ];
 
 const rightNav = [
   { href: "#location", label: "آدرس" },
-  { href: "#portfolio", label: "ارتباط با ما " },
+  { href: "#portfolio", label: "ارتباط با ما" },
   { href: "#contact", label: "راهنما" },
 ];
 
 function MosqueMark(): React.JSX.Element {
   return (
-    <svg
-      viewBox="0 0 80 52"
-      className="h-8 w-12 sm:h-9 sm:w-14"
-      aria-hidden="true"
-    >
+    <svg viewBox="0 0 80 52" className="h-8 w-12 sm:h-9 sm:w-14" aria-hidden="true">
       <g
         fill="none"
         stroke={BURGUNDY}
@@ -58,6 +55,9 @@ function MosqueMark(): React.JSX.Element {
 export default function Header(): React.JSX.Element {
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const linkStyle = { color: BURGUNDY };
+  const linkHover = { color: BURGUNDY_DEEP };
+
   return (
     <header
       dir="rtl"
@@ -82,69 +82,81 @@ export default function Header(): React.JSX.Element {
           {menuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
 
+        {/* ===== ناوبری سمت چپ ===== */}
         <nav className="hidden flex-1 items-center gap-8 lg:flex">
-          {leftNav.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              className="text-2xl font-medium uppercase tracking-[0.28em] transition-colors"
-              style={{ color: BURGUNDY }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = BURGUNDY_DEEP;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = BURGUNDY;
-              }}
-            >
-              {item.label}
-            </a>
-          ))}
+          {leftNav.map((item) =>
+            item.href.startsWith("#") ? (
+              <a
+                key={item.href}
+                href={item.href}
+                className="text-2xl font-medium uppercase tracking-[0.28em] transition-colors"
+                style={linkStyle}
+                onMouseEnter={(e) => (e.currentTarget.style.color = linkHover.color)}
+                onMouseLeave={(e) => (e.currentTarget.style.color = linkStyle.color)}
+              >
+                {item.label}
+              </a>
+            ) : (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="text-2xl font-medium uppercase tracking-[0.28em] transition-colors"
+                style={linkStyle}
+                onMouseEnter={(e) => (e.currentTarget.style.color = linkHover.color)}
+                onMouseLeave={(e) => (e.currentTarget.style.color = linkStyle.color)}
+              >
+                {item.label}
+              </Link>
+            ),
+          )}
         </nav>
 
-        <a href="#home" className="flex flex-col items-center text-center">
-          <MosqueMark />
-          <span
-            className="mt-0.5 text-xl font-semibold leading-none tracking-[0.18em] sm:text-2xl"
-            style={{ color: BURGUNDY_DEEP }}
-          >
-            kerman&apos;s
-          </span>
-          <span
-            className="mt-1 text-base font-medium tracking-[0.28em] sm:text-lg"
-            style={{ color: BURGUNDY }}
-          >
-            Carpet
-          </span>
-        </a>
+        {/* ===== لوگو ===== */}
+          <Link href="/" className="flex items-center justify-center">
+          <Image
+            src="/assets/toplpgo.png"
+            alt="Kerman's Carpet"
+            width={180}
+            height={80}
+            priority
+            className="h-auto w-[140px] sm:w-[180px]"
+          />
+        </Link>
 
+        {/* ===== ناوبری سمت راست ===== */}
         <div className="hidden flex-1 items-center justify-end gap-8 lg:flex">
-          {rightNav.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              className="text-2xl font-medium uppercase tracking-[0.28em] transition-colors"
-              style={{ color: BURGUNDY }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = BURGUNDY_DEEP;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = BURGUNDY;
-              }}
-            >
-              {item.label}
-            </a>
-          ))}
+          {rightNav.map((item) =>
+            item.href.startsWith("#") ? (
+              <a
+                key={item.href}
+                href={item.href}
+                className="text-2xl font-medium uppercase tracking-[0.28em] transition-colors"
+                style={linkStyle}
+                onMouseEnter={(e) => (e.currentTarget.style.color = linkHover.color)}
+                onMouseLeave={(e) => (e.currentTarget.style.color = linkStyle.color)}
+              >
+                {item.label}
+              </a>
+            ) : (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="text-2xl font-medium uppercase tracking-[0.28em] transition-colors"
+                style={linkStyle}
+                onMouseEnter={(e) => (e.currentTarget.style.color = linkHover.color)}
+                onMouseLeave={(e) => (e.currentTarget.style.color = linkStyle.color)}
+              >
+                {item.label}
+              </Link>
+            ),
+          )}
           <button
             type="button"
             className="ml-1 p-1 transition-colors"
             style={{ color: BURGUNDY }}
             aria-label="Search"
-            onMouseEnter={(e) => {
-              e.currentTarget.style.color = BURGUNDY_DEEP;
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.color = BURGUNDY;
-            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = BURGUNDY_DEEP)}
+            onMouseLeave={(e) => (e.currentTarget.style.color = BURGUNDY)}
           >
             <Search size={16} strokeWidth={1.6} />
           </button>
@@ -160,6 +172,7 @@ export default function Header(): React.JSX.Element {
         </button>
       </motion.div>
 
+      {/* ===== منوی موبایل ===== */}
       <AnimatePresence>
         {menuOpen && (
           <motion.nav
@@ -177,17 +190,29 @@ export default function Header(): React.JSX.Element {
               className="flex flex-col gap-4 px-6 py-5 text-center text-base uppercase tracking-[0.28em]"
               style={{ color: BURGUNDY }}
             >
-              {[...leftNav, ...rightNav].map((item) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setMenuOpen(false)}
-                  className="transition-colors"
-                  style={{ color: BURGUNDY }}
-                >
-                  {item.label}
-                </a>
-              ))}
+              {[...leftNav, ...rightNav].map((item) =>
+                item.href.startsWith("#") ? (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMenuOpen(false)}
+                    className="transition-colors"
+                    style={{ color: BURGUNDY }}
+                  >
+                    {item.label}
+                  </a>
+                ) : (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMenuOpen(false)}
+                    className="transition-colors"
+                    style={{ color: BURGUNDY }}
+                  >
+                    {item.label}
+                  </Link>
+                ),
+              )}
             </div>
           </motion.nav>
         )}

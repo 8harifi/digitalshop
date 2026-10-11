@@ -20,6 +20,7 @@ from .serializers import (
     InquirySerializer,
     UserSerializer,
 )
+from .throttles import InquiryRateThrottle
 
 User = get_user_model()
 
@@ -124,6 +125,11 @@ class InquiryViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ['carpet']
     search_fields = ['name', 'email', 'phone', 'message']
+
+    def get_throttles(self):
+        if self.action == 'create':
+            return [InquiryRateThrottle()]
+        return []
 
 
 class UserViewSet(viewsets.ModelViewSet):

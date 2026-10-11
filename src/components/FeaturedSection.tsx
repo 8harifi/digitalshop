@@ -2,7 +2,12 @@
 
 import { useRef } from "react";
 import Image from "next/image";
-import { motion, useInView } from "framer-motion";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import "@/styles/featured.css";
@@ -28,26 +33,58 @@ const carpets: CarpetStory[] = [
 
 function CarpetChapter({ carpet }: { carpet: CarpetStory }) {
   const t = useTranslations("Shop");
-  const textRef = useRef<HTMLDivElement>(null);
-  const textInView = useInView(textRef, { once: true, amount: 0.1 });
+  const ref = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
+
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  const y = useTransform(scrollYProgress, [0, 1], [48, -48]);
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.08, 1, 1.08]);
 
   return (
-    <article className="relative h-[145svh]">
-      <div className="sticky top-0 flex h-svh flex-col items-center overflow-hidden py-10">
-        <div className="relative z-10 h-[50svh] aspect-[3/4]">
-          <Image src={carpet.image} alt="" fill className="object-contain" />
-        </div>
+    <article className="relative flex min-h-[78svh] flex-col items-center justify-center px-6 py-12">
+      <div ref={ref} className="w-full max-w-[22rem]">
         <motion.div
-          ref={textRef}
-          initial={{ opacity: 0, y: 12 }}
-          animate={textInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="mt-10 text-center px-6"
+          initial={reduced ? false : { opacity: 0, y: 32 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.35 }}
+          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          className="group relative"
         >
-          <h2 className="fs-display text-4xl sm:text-6xl">
+          <span className="fs-chapter__glow" aria-hidden="true" />
+
+          <motion.div style={reduced ? undefined : { y }} className="relative">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[1.5rem] shadow-[0_2.5rem_4.5rem_-1.5rem_rgba(0,0,0,0.75)]">
+              <motion.div
+                style={reduced ? undefined : { scale }}
+                className="absolute inset-0"
+              >
+                <Image
+                  src={carpet.image}
+                  alt=""
+                  fill
+                  sizes="(max-width: 768px) 80vw, 22rem"
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+                />
+              </motion.div>
+              <span className="pointer-events-none absolute inset-0 rounded-[1.5rem] ring-1 ring-inset ring-[rgba(232,214,163,0.28)]" />
+            </div>
+          </motion.div>
+        </motion.div>
+
+        <motion.div
+          initial={reduced ? false : { opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.6 }}
+          transition={{ duration: 0.7, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-7 text-center"
+        >
+          <h2 className="fs-display text-4xl sm:text-5xl lg:text-6xl">
             {t(carpet.titleKey)}
           </h2>
-          <p className="fs-muted mt-4 max-w-2xl text-lg sm:text-xl">
+          <p className="fs-muted mx-auto mt-3 max-w-xl text-base leading-8 sm:text-lg">
             {t(carpet.descKey)}
           </p>
         </motion.div>
@@ -60,18 +97,32 @@ export default function FeaturedSection() {
   const t = useTranslations("Shop");
 
   return (
-    <section className="fs-root min-h-screen bg-olive">
-      <div className="py-20 text-center">
+    <section className="fs-root">
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.5 }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        className="pt-24 pb-6 text-center"
+      >
         <h2 className="fs-display text-5xl sm:text-7xl">{t("title")}</h2>
-      </div>
+      </motion.div>
+
       {carpets.map((c) => (
         <CarpetChapter key={c.titleKey} carpet={c} />
       ))}
-      <div className="py-20 text-center">
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.6 }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        className="pt-6 pb-24 text-center"
+      >
         <Link href="/shop" className="fs-cta text-xl">
           {t("all")}
         </Link>
-      </div>
+      </motion.div>
     </section>
   );
 }

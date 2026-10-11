@@ -22,7 +22,10 @@
     "material": "Material",
     "pattern": "Pattern",
     "notFound": "Rug not found",
-    "loading": "Loading…"
+    "loading": "Loading…",
+    "noImage": "No Image",
+    "currency": "Toman",
+    "cm": "cm"
   },
   "Shop": {
     "filter": "Filters",

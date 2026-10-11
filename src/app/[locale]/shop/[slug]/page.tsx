@@ -50,8 +50,9 @@ const softEase = cubicBezier(0.4, 0, 0.2, 1);
 function RugGallery({ images, title }: { images: RugDetail['images']; title: string }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const reducedMotion = useReducedMotion();
+  const t = useTranslations('Common');
 
-  if (!images || images.length === 0) return <div className="aspect-square bg-walnut/10 rounded-xl flex items-center justify-center">No Image</div>;
+  if (!images || images.length === 0) return <div className="aspect-square bg-walnut/10 rounded-xl flex items-center justify-center">{t('noImage')}</div>;
 
   return (
     <div className="fs-gallery">
@@ -184,7 +185,7 @@ export default function RugDetailPage() {
             <div className="fs-price-box mt-7">
               <p className="fs-price-lg">
                 {formatPrice(rug.price, locale)}
-                <span className="fs-price__unit"> {locale === 'en' ? 'Toman' : 'تومان'}</span>
+                <span className="fs-price__unit"> {t('currency')}</span>
               </p>
 
               <div className="mt-8 flex flex-wrap gap-4">
@@ -212,7 +213,7 @@ export default function RugDetailPage() {
               <h2 className="fs-display text-2xl sm:text-3xl">{t('specs')}</h2>
               <dl className="fs-specs__grid">
                  <div><dt>{t('origin')}</dt><dd>{rug.origin}</dd></div>
-                 <div><dt>{t('size')}</dt><dd>{toLocalizedDigits(rug.width, locale)} x {toLocalizedDigits(rug.length, locale)} cm</dd></div>
+                 <div><dt>{t('size')}</dt><dd>{toLocalizedDigits(rug.width, locale)} x {toLocalizedDigits(rug.length, locale)} {t('cm')}</dd></div>
                  <div><dt>{t('knotDensity')}</dt><dd>{rug.knot_density}</dd></div>
                  <div><dt>{t('material')}</dt><dd>{rug.material}</dd></div>
                  <div><dt>{t('pattern')}</dt><dd>{rug.pattern}</dd></div>

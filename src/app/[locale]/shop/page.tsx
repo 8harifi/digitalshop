@@ -68,7 +68,7 @@ function ProductCard({ carpet, index, locale }: { carpet: Carpet; index: number;
                 className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
               />
             ) : (
-              <div className="flex h-full w-full items-center justify-center bg-walnut/10">No Image</div>
+              <div className="flex h-full w-full items-center justify-center bg-walnut/10">{t('noImage')}</div>
             )}
             <div className="fs-card__veil" aria-hidden="true" />
 
@@ -96,7 +96,7 @@ function ProductCard({ carpet, index, locale }: { carpet: Carpet; index: number;
 
               <p className="fs-price">
                 {formatPrice(carpet.price, locale)}
-                <span className="fs-price__unit"> {locale === 'en' ? 'Toman' : 'تومان'}</span>
+                <span className="fs-price__unit"> {t('currency')}</span>
               </p>
             </div>
           </div>
@@ -198,7 +198,7 @@ export default function ShopPage() {
         <div className="mx-auto max-w-6xl px-6 pb-24">
           <AnimatePresence mode="popLayout">
             {loading ? (
-              <div className="py-20 text-center">...</div>
+              <div className="py-20 text-center">{ct('loading')}</div>
             ) : carpetsData.length === 0 ? (
               <motion.p
                 key="empty"

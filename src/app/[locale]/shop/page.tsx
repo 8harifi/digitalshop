@@ -5,7 +5,6 @@ import Image from "next/image";
 import { Link } from '@/i18n/navigation';
 import {
   motion,
-  AnimatePresence,
   useReducedMotion,
   useScroll,
   useTransform,
@@ -119,31 +118,31 @@ export default function ShopPage() {
   const isRTL = locale !== 'en';
 
   const [carpetsData, setCarpetsData] = useState<Carpet[]>([]);
-  const [activeCategory, setActiveCategory] = useState("all");
   const [sortBy, setSortBy] = useState("newest");
   const [onlyAvailable, setOnlyAvailable] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [errored, setErrored] = useState(false);
 
   useEffect(() => {
     const fetchItems = async () => {
       setLoading(true);
+      setErrored(false);
       try {
-        const params: any = {};
-        if (activeCategory !== "all") params.category = activeCategory;
+        const params: Record<string, string> = {};
         if (onlyAvailable) params.stock_status = 'available';
         if (sortBy === 'price-asc') params.ordering = 'price';
         if (sortBy === 'price-desc') params.ordering = '-price';
 
         const data = await getCarpets(params);
         setCarpetsData(data);
-      } catch (err) {
-        console.error("Failed to fetch carpets:", err);
+      } catch {
+        setErrored(true);
       } finally {
         setLoading(false);
       }
     };
     fetchItems();
-  }, [activeCategory, sortBy, onlyAvailable, locale]);
+  }, [sortBy, onlyAvailable, locale]);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -190,33 +189,34 @@ export default function ShopPage() {
              </select>
           </div>
 
-          <p className="fs-muted mt-4 text-base sm:text-lg">
-            {t('found', { count: toLocalizedDigits(carpetsData.length, locale) })}
-          </p>
+          {!loading && !errored && (
+            <p className="fs-muted mt-4 text-base sm:text-lg">
+              {t('found', { count: toLocalizedDigits(carpetsData.length, locale) })}
+            </p>
+          )}
         </div>
 
         <div className="mx-auto max-w-6xl px-6 pb-24">
-          <AnimatePresence mode="popLayout">
-            {loading ? (
-              <div className="py-20 text-center">{ct('loading')}</div>
-            ) : carpetsData.length === 0 ? (
-              <motion.p
-                key="empty"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="fs-muted py-20 text-center text-lg"
-              >
-                {t('noResults')}
-              </motion.p>
-            ) : (
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
-                {carpetsData.map((carpet, i) => (
-                  <ProductCard key={carpet.id} carpet={carpet} index={i} locale={locale} />
-                ))}
-              </div>
-            )}
-          </AnimatePresence>
+          {loading ? (
+            <div className="py-20 text-center">{ct('loading')}</div>
+          ) : errored ? (
+            <p className="py-20 text-center text-lg" style={{ color: '#e0a0a0' }}>{ct('error')}</p>
+          ) : carpetsData.length === 0 ? (
+            <motion.p
+              key="empty"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="fs-muted py-20 text-center text-lg"
+            >
+              {t('noResults')}
+            </motion.p>
+          ) : (
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+              {carpetsData.map((carpet, i) => (
+                <ProductCard key={carpet.id} carpet={carpet} index={i} locale={locale} />
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

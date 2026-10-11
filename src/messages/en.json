@@ -25,7 +25,8 @@
     "loading": "Loading…",
     "noImage": "No Image",
     "currency": "Toman",
-    "cm": "cm"
+    "cm": "cm",
+    "error": "Something went wrong. Please try again."
   },
   "Shop": {
     "filter": "Filters",

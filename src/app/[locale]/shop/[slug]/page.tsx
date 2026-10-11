@@ -112,6 +112,7 @@ export default function RugDetailPage() {
   const { add } = useCart();
   const [rug, setRug] = useState<RugDetail | null>(null);
   const [loading, setLoading] = useState(true);
+  const [errored, setErrored] = useState(false);
 
   const pageRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
@@ -126,8 +127,8 @@ export default function RugDetailPage() {
       try {
         const data = await getCarpet(slug);
         setRug(data);
-      } catch (err) {
-        console.error("Failed to fetch carpet detail:", err);
+      } catch {
+        setErrored(true);
       } finally {
         setLoading(false);
       }
@@ -136,6 +137,7 @@ export default function RugDetailPage() {
   }, [slug, locale]);
 
   if (loading) return <div className="min-h-screen bg-olive flex items-center justify-center text-cream">{t('loading')}</div>;
+  if (errored) return <div className="min-h-screen bg-olive flex items-center justify-center text-cream">{t('error')}</div>;
   if (!rug) return <div className="min-h-screen bg-olive flex items-center justify-center text-cream">{t('notFound')}</div>;
 
   const statusLabel = rug.stock_status === 'available' ? t('available') :

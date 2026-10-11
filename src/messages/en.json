@@ -89,6 +89,8 @@
     "email": "Email",
     "phone": "Phone",
     "required": "Please fill in your name and email.",
+    "error": "Something went wrong. Please try again.",
+    "checkoutSubject": "Checkout (test mode)",
     "payment": "Payment",
     "testNotice": "Test mode — no real payment will be processed.",
     "cardNumber": "Card number",

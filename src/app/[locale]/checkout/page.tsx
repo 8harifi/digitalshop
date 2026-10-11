@@ -20,7 +20,7 @@ export default function CheckoutPage() {
   const { items, subtotal, setQty, remove, clear } = useCart();
 
   const [form, setForm] = useState({ name: '', email: '', phone: '' });
-  const [state, setState] = useState<'idle' | 'placing' | 'done' | 'error'>('idle');
+  const [state, setState] = useState<'idle' | 'placing' | 'done' | 'error' | 'invalid'>('idle');
 
   const image = (src: string | null) =>
     !src ? '' : src.startsWith('http') ? src : `${origin}${src}`;
@@ -29,12 +29,12 @@ export default function CheckoutPage() {
     e.preventDefault();
     if (items.length === 0) return;
     if (!form.name || !form.email) {
-      setState('error');
+      setState('invalid');
       return;
     }
     setState('placing');
     const summary = items
-      .map((i) => `${i.title} ×${i.qty} — ${(i.price * i.qty).toLocaleString()}`)
+      .map((i) => `${i.title} ×${i.qty} — ${formatPrice(i.price * i.qty, locale)}`)
       .join('\n');
     try {
       await submitInquiry({
@@ -42,7 +42,7 @@ export default function CheckoutPage() {
         email: form.email,
         phone: form.phone,
         carpet: items.length === 1 ? items[0].id : null,
-        message: `Checkout (test mode)\n\n${summary}\n\nTotal: ${subtotal.toLocaleString()}`,
+        message: `${t('checkoutSubject')}\n\n${summary}\n\n${t('total')}: ${formatPrice(subtotal, locale)}`,
       });
       clear();
       setState('done');
@@ -188,7 +188,8 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-              {state === 'error' && <p className="pub-error">{t('required')}</p>}
+              {state === 'invalid' && <p className="pub-error">{t('required')}</p>}
+              {state === 'error' && <p className="pub-error">{t('error')}</p>}
 
               <button className="pub-btn pub-btn--block" type="submit" disabled={state === 'placing'}>
                 {state === 'placing' ? t('placing') : t('placeOrder')}

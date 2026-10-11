@@ -88,7 +88,3 @@ export function useAuth() {
   if (!ctx) throw new Error('useAuth must be used inside <AuthProvider>');
   return ctx;
 }
-
-export function isAuthed() {
-  return Boolean(tokenStore.access);
-}

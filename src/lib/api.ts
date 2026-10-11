@@ -94,11 +94,6 @@ export const submitInquiry = async (data: Record<string, unknown>) => {
 
 /* ------------------------------- Auth / stats ------------------------------ */
 
-export const getMe = async () => {
-  const response = await api.get('/me/');
-  return response.data;
-};
-
 export const getStats = async () => {
   const response = await api.get('/stats/');
   return response.data;
@@ -113,11 +108,6 @@ export const createProduct = async (data: Record<string, unknown>) => {
 
 export const updateProduct = async (id: number | string, data: Record<string, unknown>) => {
   const response = await api.put(`/products/${id}/`, data);
-  return response.data;
-};
-
-export const patchProduct = async (id: number | string, data: Record<string, unknown>) => {
-  const response = await api.patch(`/products/${id}/`, data);
   return response.data;
 };
 

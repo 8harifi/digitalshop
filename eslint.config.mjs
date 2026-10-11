@@ -12,10 +12,15 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    "backend/**",
+    "venv/**",
+    ".commandcode/**",
   ]),
   {
     rules: {
       "no-console": "error",
+      // Initial data-loading effects legitimately set state on mount.
+      "react-hooks/set-state-in-effect": "warn",
     },
   },
 ]);

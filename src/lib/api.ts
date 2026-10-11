@@ -84,8 +84,6 @@ api.interceptors.response.use(
 
 export default api;
 
-type Paginated<T> = { results: T[] };
-
 // DRF may return either a bare array or a paginated { results } envelope.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const unwrapList = (data: any): any[] =>

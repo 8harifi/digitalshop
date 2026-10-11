@@ -78,6 +78,7 @@ class CarpetWriteSerializer(serializers.ModelSerializer):
             'material': {'required': False, 'allow_blank': True},
             'pattern': {'required': False, 'allow_blank': True},
             'knot_density': {'required': False, 'allow_blank': True},
+            'slug': {'required': False, 'allow_blank': True},
             'sku': {'read_only': True},
         }
 

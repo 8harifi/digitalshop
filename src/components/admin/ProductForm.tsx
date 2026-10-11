@@ -231,9 +231,9 @@ export default function ProductForm({
             <label className="ad-label">{t('products.slug')}</label>
             <input
               className="ad-input"
+              placeholder="auto"
               value={form.slug}
               onChange={(e) => set('slug', e.target.value)}
-              required
             />
           </div>
           <div className="ad-field">

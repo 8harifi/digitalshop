@@ -1,6 +1,7 @@
 from django.db import IntegrityError, models, transaction
 from django.db.models import IntegerField, Max
 from django.db.models.functions import Cast, Substr
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
 class Category(models.Model):
@@ -21,7 +22,7 @@ class Carpet(models.Model):
     )
 
     title = models.CharField(max_length=255)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='carpets')
     description = models.TextField()
     origin = models.CharField(max_length=100)
@@ -44,6 +45,8 @@ class Carpet(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = self._generate_slug()
         if self.sku:
             return super().save(*args, **kwargs)
         # Retry on the unique constraint so two concurrent creates cannot keep
@@ -68,6 +71,15 @@ class Carpet(models.Model):
             value=Max(Cast(Substr('sku', len(prefix) + 2), output_field=IntegerField()))
         )['value']
         return f'{prefix}-{(latest or 0) + 1:04d}'
+
+    def _generate_slug(self):
+        base = slugify(self.title_en or self.title or self.title_fa or self.title_ar or '') or 'carpet'
+        slug = base
+        index = 2
+        while type(self).objects.filter(slug=slug).exclude(pk=self.pk).exists():
+            slug = f'{base}-{index}'
+            index += 1
+        return slug
 
 class CarpetImage(models.Model):
     carpet = models.ForeignKey(Carpet, on_delete=models.CASCADE, related_name='images')

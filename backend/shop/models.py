@@ -10,6 +10,7 @@ class Category(models.Model):
 
     class Meta:
         verbose_name_plural = "Categories"
+        ordering = ['name']
 
     def __str__(self):
         return self.name
@@ -40,6 +41,13 @@ class Carpet(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['category']),
+            models.Index(fields=['stock_status']),
+        ]
 
     def __str__(self):
         return self.title
@@ -86,16 +94,30 @@ class CarpetImage(models.Model):
     image = models.ImageField(upload_to='carpets/')
     is_primary = models.BooleanField(default=False)
 
+    class Meta:
+        ordering = ['id']
+
     def __str__(self):
         return f"Image for {self.carpet.title}"
 
 class Inquiry(models.Model):
+    STATUS = (
+        ('new', _('New')),
+        ('in_progress', _('In progress')),
+        ('done', _('Done')),
+    )
+
     carpet = models.ForeignKey(Carpet, on_delete=models.CASCADE, related_name='inquiries', null=True, blank=True)
     name = models.CharField(max_length=255)
     email = models.EmailField()
     phone = models.CharField(max_length=20)
     message = models.TextField()
+    status = models.CharField(max_length=20, choices=STATUS, default='new')
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name_plural = "Inquiries"
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.name} ({self.get_status_display()})"

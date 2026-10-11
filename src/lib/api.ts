@@ -65,11 +65,18 @@ api.interceptors.response.use(
 
 export default api;
 
+type Paginated<T> = { results: T[] };
+
+// DRF may return either a bare array or a paginated { results } envelope.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const unwrapList = (data: any): any[] =>
+  Array.isArray(data) ? data : (data?.results ?? []);
+
 /* ---------------------------------- Public --------------------------------- */
 
 export const getCarpets = async (params: Record<string, unknown> = {}) => {
   const response = await api.get('/products/', { params });
-  return response.data;
+  return unwrapList(response.data);
 };
 
 export const getCarpet = async (slug: string) => {
@@ -84,7 +91,7 @@ export const getProduct = async (id: number | string) => {
 
 export const getCategories = async () => {
   const response = await api.get('/categories/');
-  return response.data;
+  return unwrapList(response.data);
 };
 
 export const submitInquiry = async (data: Record<string, unknown>) => {
@@ -156,7 +163,7 @@ export const deleteCategory = async (id: number | string) => {
 
 export const getInquiries = async (params: Record<string, unknown> = {}) => {
   const response = await api.get('/inquiry/', { params });
-  return response.data;
+  return unwrapList(response.data);
 };
 
 export const deleteInquiry = async (id: number | string) => {
@@ -167,7 +174,7 @@ export const deleteInquiry = async (id: number | string) => {
 
 export const getUsers = async (params: Record<string, unknown> = {}) => {
   const response = await api.get('/users/', { params });
-  return response.data;
+  return unwrapList(response.data);
 };
 
 export const createUser = async (data: Record<string, unknown>) => {

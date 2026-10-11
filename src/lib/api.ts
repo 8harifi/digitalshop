@@ -38,25 +38,44 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+let refreshPromise: Promise<string> | null = null;
+
+async function refreshAccessToken(): Promise<string> {
+  const { data } = await axios.post(`${API_URL}/token/refresh/`, {
+    refresh: tokenStore.refresh,
+  });
+  tokenStore.set(data.access, data.refresh ?? null);
+  return data.access;
+}
+
+function onUnauthorized() {
+  tokenStore.clear();
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new Event('kh-unauthorized'));
+  }
+}
+
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const original = error.config;
     const status = error.response?.status;
-    if (status === 401 && original && !original._retry && tokenStore.refresh) {
+    if (status === 401 && original && !original._retry) {
       original._retry = true;
+      if (!tokenStore.refresh) {
+        onUnauthorized();
+        return Promise.reject(error);
+      }
       try {
-        const { data } = await axios.post(`${API_URL}/token/refresh/`, {
-          refresh: tokenStore.refresh,
-        });
-        tokenStore.set(data.access);
-        original.headers.Authorization = `Bearer ${data.access}`;
+        // Share one refresh across concurrent 401s and persist a rotated token.
+        refreshPromise = refreshPromise ?? refreshAccessToken();
+        const access = await refreshPromise;
+        refreshPromise = null;
+        original.headers.Authorization = `Bearer ${access}`;
         return api(original);
       } catch {
-        tokenStore.clear();
-        if (typeof window !== 'undefined') {
-          window.dispatchEvent(new Event('kh-unauthorized'));
-        }
+        refreshPromise = null;
+        onUnauthorized();
       }
     }
     return Promise.reject(error);

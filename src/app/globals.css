@@ -13,7 +13,19 @@
   --ink-soft: #16110e;
   --background: #0c0a08;
   --foreground: #f2e8d5;
-  --font-display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+}
+
+@theme {
+  --color-olive: #636b2f;
+  --color-olive-dark: #2f3b18;
+  --color-cream: #f2e8d5;
+  --color-walnut: #5b4636;
+  --color-burgundy: #6b1f2e;
+  --color-ruby: #8b1e3f;
+  --color-gold: #d4b483;
+  --color-ink: #0c0a08;
+  --color-border: #d4b483;
+  --font-heading: var(--font-display), Georgia, serif;
 }
 
 html {

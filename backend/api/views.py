@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.db import transaction
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, generics, status, viewsets
@@ -62,12 +63,11 @@ class CarpetViewSet(viewsets.ModelViewSet):
             return Response({'detail': 'image file is required'}, status=status.HTTP_400_BAD_REQUEST)
 
         is_primary = str(request.data.get('is_primary', '')).lower() in ('1', 'true', 'yes')
-        if is_primary:
-            carpet.images.update(is_primary=False)
-        elif not carpet.images.exists():
-            is_primary = True
-
-        img = CarpetImage.objects.create(carpet=carpet, image=image, is_primary=is_primary)
+        with transaction.atomic():
+            if is_primary or not carpet.images.exists():
+                is_primary = True
+                carpet.images.update(is_primary=False)
+            img = CarpetImage.objects.create(carpet=carpet, image=image, is_primary=is_primary)
         return Response(
             CarpetImageSerializer(img, context={'request': request}).data,
             status=status.HTTP_201_CREATED,
@@ -90,12 +90,26 @@ class CarpetImageViewSet(viewsets.ModelViewSet):
         img = serializer.save()
         self._sync_primary(img)
 
+    def perform_destroy(self, instance):
+        carpet = instance.carpet
+        was_primary = instance.is_primary
+        instance.delete()
+        if was_primary:
+            replacement = CarpetImage.objects.filter(carpet=carpet).first()
+            if replacement:
+                CarpetImage.objects.filter(pk=replacement.pk).update(is_primary=True)
+
     @staticmethod
     def _sync_primary(img):
-        siblings = CarpetImage.objects.filter(carpet=img.carpet).exclude(pk=img.pk)
         if img.is_primary:
-            siblings.update(is_primary=False)
-        elif not siblings.exists():
+            CarpetImage.objects.filter(carpet=img.carpet).exclude(pk=img.pk).update(is_primary=False)
+            return
+        has_primary = (
+            CarpetImage.objects.filter(carpet=img.carpet, is_primary=True)
+            .exclude(pk=img.pk)
+            .exists()
+        )
+        if not has_primary:
             CarpetImage.objects.filter(pk=img.pk).update(is_primary=True)
 
 

@@ -15,7 +15,7 @@ class CategorySerializer(serializers.ModelSerializer):
 class CarpetImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarpetImage
-        fields = ('id', 'image', 'is_primary')
+        fields = ('id', 'carpet', 'image', 'is_primary')
 
 
 class CarpetListSerializer(serializers.ModelSerializer):

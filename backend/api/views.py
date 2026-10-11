@@ -31,7 +31,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
 
 class CarpetViewSet(viewsets.ModelViewSet):
-    queryset = Carpet.objects.select_related('category').all()
+    queryset = Carpet.objects.select_related('category').prefetch_related('images').all()
     permission_classes = [ReadOnlyOrAdmin]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['category', 'origin', 'stock_status']
@@ -75,7 +75,7 @@ class CarpetViewSet(viewsets.ModelViewSet):
 
 
 class CarpetImageViewSet(viewsets.ModelViewSet):
-    queryset = CarpetImage.objects.all()
+    queryset = CarpetImage.objects.select_related('carpet').all()
     serializer_class = CarpetImageSerializer
     permission_classes = [ReadOnlyOrAdmin]
     parser_classes = [MultiPartParser, FormParser, JSONParser]

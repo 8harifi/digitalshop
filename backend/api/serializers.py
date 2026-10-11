@@ -30,9 +30,10 @@ class CarpetListSerializer(serializers.ModelSerializer):
         )
 
     def get_primary_image(self, obj):
-        img = obj.images.filter(is_primary=True).first()
-        if not img:
-            img = obj.images.first()
+        images = list(obj.images.all())
+        img = next((image for image in images if image.is_primary), None)
+        if not img and images:
+            img = images[0]
         if img:
             url = img.image.url
             request = self.context.get('request')

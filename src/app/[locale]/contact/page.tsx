@@ -1,0 +1,140 @@
+'use client';
+
+import { Suspense, useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useLocale, useTranslations } from 'next-intl';
+
+import Header from '@/components/Header';
+import { getProduct, submitInquiry } from '@/lib/api';
+import '@/styles/public.css';
+
+function ContactInner() {
+  const t = useTranslations('Contact');
+  const locale = useLocale();
+  const dir = locale === 'en' ? 'ltr' : 'rtl';
+  const params = useSearchParams();
+  const carpetId = params.get('carpet');
+
+  const [carpetName, setCarpetName] = useState<string | null>(null);
+  const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
+  const [state, setState] = useState<'idle' | 'sending' | 'done' | 'error'>('idle');
+
+  useEffect(() => {
+    if (!carpetId) return;
+    getProduct(carpetId)
+      .then((data) => setCarpetName(data.title))
+      .catch(() => setCarpetName(null));
+  }, [carpetId]);
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name || !form.email || !form.message) {
+      setState('error');
+      return;
+    }
+    setState('sending');
+    try {
+      await submitInquiry({
+        ...form,
+        carpet: carpetId ? Number(carpetId) : null,
+      });
+      setState('done');
+    } catch {
+      setState('error');
+    }
+  };
+
+  return (
+    <main className="pub-root" dir={dir}>
+      <Header />
+      <div className="pub-wrap">
+        <div className="pub-hero">
+          <h1 className="pub-display pub-hero__title">{t('title')}</h1>
+          <p className="pub-hero__sub">{t('subtitle')}</p>
+        </div>
+
+        {state === 'done' ? (
+          <div className="pub-success">
+            <h2 className="pub-display" style={{ fontSize: '1.6rem' }}>
+              {t('success')}
+            </h2>
+            <p className="pub-muted" style={{ marginTop: '0.6rem' }}>
+              {t('successNote')}
+            </p>
+            <button
+              type="button"
+              className="pub-btn"
+              style={{ marginTop: '1.5rem' }}
+              onClick={() => {
+                setForm({ name: '', email: '', phone: '', message: '' });
+                setState('idle');
+              }}
+            >
+              {t('another')}
+            </button>
+          </div>
+        ) : (
+          <form className="pub-card" onSubmit={submit} style={{ display: 'grid', gap: '1rem' }}>
+            <div className="pub-grid-2">
+              <div className="pub-field">
+                <label className="pub-label">{t('name')}</label>
+                <input
+                  className="pub-input"
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  required
+                />
+              </div>
+              <div className="pub-field">
+                <label className="pub-label">{t('email')}</label>
+                <input
+                  type="email"
+                  className="pub-input"
+                  value={form.email}
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  required
+                />
+              </div>
+              <div className="pub-field">
+                <label className="pub-label">{t('phone')}</label>
+                <input
+                  className="pub-input"
+                  value={form.phone}
+                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                />
+              </div>
+              <div className="pub-field">
+                <label className="pub-label">{t('subject')}</label>
+                <input className="pub-input" value={carpetName ?? t('general')} readOnly />
+              </div>
+            </div>
+
+            <div className="pub-field">
+              <label className="pub-label">{t('message')}</label>
+              <textarea
+                className="pub-textarea"
+                value={form.message}
+                onChange={(e) => setForm({ ...form, message: e.target.value })}
+                required
+              />
+            </div>
+
+            {state === 'error' && <p className="pub-error">{t('error')}</p>}
+
+            <button className="pub-btn" type="submit" disabled={state === 'sending'}>
+              {state === 'sending' ? t('sending') : t('submit')}
+            </button>
+          </form>
+        )}
+      </div>
+    </main>
+  );
+}
+
+export default function ContactPage() {
+  return (
+    <Suspense>
+      <ContactInner />
+    </Suspense>
+  );
+}

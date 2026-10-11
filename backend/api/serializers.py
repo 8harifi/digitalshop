@@ -1,0 +1,127 @@
+from django.contrib.auth import get_user_model
+from rest_framework import serializers
+
+from shop.models import Category, Carpet, CarpetImage, Inquiry
+
+User = get_user_model()
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ('id', 'name', 'name_ar', 'name_fa', 'name_en', 'slug')
+
+
+class CarpetImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CarpetImage
+        fields = ('id', 'image', 'is_primary')
+
+
+class CarpetListSerializer(serializers.ModelSerializer):
+    category = serializers.StringRelatedField()
+    primary_image = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Carpet
+        fields = (
+            'id', 'title', 'slug', 'category', 'price',
+            'origin', 'stock_status', 'primary_image', 'colors',
+        )
+
+    def get_primary_image(self, obj):
+        img = obj.images.filter(is_primary=True).first()
+        if not img:
+            img = obj.images.first()
+        if img:
+            url = img.image.url
+            request = self.context.get('request')
+            return request.build_absolute_uri(url) if request else url
+        return None
+
+
+class CarpetDetailSerializer(serializers.ModelSerializer):
+    category = CategorySerializer()
+    images = CarpetImageSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Carpet
+        fields = '__all__'
+
+
+class CarpetWriteSerializer(serializers.ModelSerializer):
+    category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all())
+
+    class Meta:
+        model = Carpet
+        fields = (
+            'id', 'title', 'title_ar', 'title_fa', 'title_en', 'slug', 'category',
+            'description', 'description_ar', 'description_fa', 'description_en',
+            'origin', 'origin_ar', 'origin_fa', 'origin_en',
+            'material', 'material_ar', 'material_fa', 'material_en',
+            'pattern', 'pattern_ar', 'pattern_fa', 'pattern_en',
+            'price', 'width', 'length', 'knot_density', 'colors', 'stock_status', 'sku',
+        )
+        extra_kwargs = {
+            'title': {'required': False, 'allow_blank': True},
+            'description': {'required': False, 'allow_blank': True},
+            'origin': {'required': False, 'allow_blank': True},
+            'material': {'required': False, 'allow_blank': True},
+            'pattern': {'required': False, 'allow_blank': True},
+            'knot_density': {'required': False, 'allow_blank': True},
+            'sku': {'read_only': True},
+        }
+
+    def _fill_defaults(self, attrs):
+        for field in ('title', 'description', 'origin', 'material', 'pattern'):
+            if not attrs.get(field):
+                attrs[field] = (
+                    attrs.get(f'{field}_ar') or attrs.get(f'{field}_fa')
+                    or attrs.get(f'{field}_en') or ''
+                )
+        return attrs
+
+    def create(self, validated_data):
+        return super().create(self._fill_defaults(validated_data))
+
+    def update(self, instance, validated_data):
+        return super().update(instance, self._fill_defaults(validated_data))
+
+
+class InquirySerializer(serializers.ModelSerializer):
+    carpet_title = serializers.CharField(source='carpet.title', read_only=True)
+
+    class Meta:
+        model = Inquiry
+        fields = '__all__'
+
+
+class UserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, required=False, allow_blank=True)
+
+    class Meta:
+        model = User
+        fields = (
+            'id', 'username', 'email', 'first_name', 'last_name',
+            'is_staff', 'is_superuser', 'is_active',
+            'date_joined', 'last_login', 'password',
+        )
+        read_only_fields = ('date_joined', 'last_login')
+
+    def create(self, validated_data):
+        password = validated_data.pop('password', None)
+        user = User(**validated_data)
+        if password:
+            user.set_password(password)
+        else:
+            user.set_unusable_password()
+        user.save()
+        return user
+
+    def update(self, instance, validated_data):
+        password = validated_data.pop('password', None)
+        user = super().update(instance, validated_data)
+        if password:
+            user.set_password(password)
+            user.save()
+        return

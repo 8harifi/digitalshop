@@ -16,6 +16,7 @@ import {
 } from "framer-motion";
 import { useTranslations, useLocale } from 'next-intl';
 import { getCarpet } from '@/lib/api';
+import { formatPrice, toLocalizedDigits } from '@/lib/format';
 
 /* ============================================================
    Types
@@ -29,7 +30,7 @@ type RugDetail = {
   origin: string;
   description: string;
   longDescription: string;
-  price: number;
+  price: number | string;
   width: number;
   length: number;
   knot_density: string;
@@ -41,16 +42,6 @@ type RugDetail = {
 };
 
 const softEase = cubicBezier(0.4, 0, 0.2, 1);
-
-function toLocalizedDigits(input: string | number, locale: string) {
-  if (locale === 'en') return String(input);
-  const digits = locale === 'fa' ? "۰۱۲۳۴۵۶۷۸۹" : "٠١٢٣٤٥٦٧٨٩";
-  return String(input).replace(/\d/g, (d) => digits[Number(d)]);
-}
-
-function formatPrice(price: number, locale: string) {
-  return toLocalizedDigits(price.toLocaleString("en-US"), locale);
-}
 
 /* ============================================================
    Gallery

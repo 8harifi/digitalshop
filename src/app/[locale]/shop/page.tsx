@@ -14,6 +14,7 @@ import {
 } from "framer-motion";
 import { useTranslations, useLocale } from 'next-intl';
 import { getCarpets } from '@/lib/api';
+import { formatPrice, toLocalizedDigits } from '@/lib/format';
 import Header from '@/components/Header';
 
 /* ============================================================
@@ -26,23 +27,13 @@ type Carpet = {
   primary_image: string;
   title: string;
   origin: string;
-  price: number;
+  price: number | string;
   colors: string[];
   category: string;
   stock_status: "available" | "reserved" | "sold";
 };
 
 const softEase = cubicBezier(0.4, 0, 0.2, 1);
-
-function toLocalizedDigits(input: string | number, locale: string) {
-  if (locale === 'en') return String(input);
-  const digits = locale === 'fa' ? "۰۱۲۳۴۵۶۷۸۹" : "٠١٢٣٤٥٦٧٨٩";
-  return String(input).replace(/\d/g, (d) => digits[Number(d)]);
-}
-
-function formatPrice(price: number, locale: string) {
-  return toLocalizedDigits(price.toLocaleString("en-US"), locale);
-}
 
 /* ============================================================
    Product Card

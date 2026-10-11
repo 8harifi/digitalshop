@@ -7,6 +7,7 @@ import Header from '@/components/Header';
 import { Link } from '@/i18n/navigation';
 import { API_URL, submitInquiry } from '@/lib/api';
 import { useCart } from '@/lib/cart';
+import { formatPrice } from '@/lib/format';
 import '@/styles/public.css';
 
 const origin = API_URL.replace(/\/api\/?$/, '');
@@ -105,7 +106,7 @@ export default function CheckoutPage() {
                       {item.title}
                     </Link>
                     <p className="pub-gold" style={{ fontSize: '0.95rem' }}>
-                      {item.price.toLocaleString()}
+                      {formatPrice(item.price, locale)}
                     </p>
                     <div className="pub-qty">
                       <button type="button" onClick={() => setQty(item.id, item.qty - 1)}>
@@ -125,12 +126,12 @@ export default function CheckoutPage() {
                       </button>
                     </div>
                   </div>
-                  <div className="pub-gold">{(item.price * item.qty).toLocaleString()}</div>
+                  <div className="pub-gold">{formatPrice(item.price * item.qty, locale)}</div>
                 </div>
               ))}
               <div className="pub-summary-total">
                 <span>{t('total')}</span>
-                <span>{subtotal.toLocaleString()}</span>
+                <span>{formatPrice(subtotal, locale)}</span>
               </div>
             </section>
 

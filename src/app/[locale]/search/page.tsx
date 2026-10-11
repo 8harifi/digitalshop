@@ -7,6 +7,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import Header from '@/components/Header';
 import { Link } from '@/i18n/navigation';
 import { API_URL, getCarpets } from '@/lib/api';
+import { formatPrice } from '@/lib/format';
 import '@/styles/public.css';
 
 type Rug = {
@@ -53,8 +54,6 @@ function SearchInner() {
     e.preventDefault();
     run(term);
   };
-
-  const price = (value: number | string) => Number(value).toLocaleString('en-US');
 
   return (
     <main className="pub-root" dir={dir}>
@@ -115,7 +114,7 @@ function SearchInner() {
                         {rug.origin}
                       </p>
                       <p className="pub-rug__price" style={{ marginTop: '0.5rem' }}>
-                        {price(rug.price)}
+                        {formatPrice(rug.price, locale)}
                       </p>
                     </div>
                   </Link>

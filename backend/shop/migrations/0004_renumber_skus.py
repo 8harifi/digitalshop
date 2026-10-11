@@ -5,13 +5,15 @@ from django.db import migrations
 
 def renumber_skus(apps, schema_editor):
     Carpet = apps.get_model('shop', 'Carpet')
-    for index, carpet in enumerate(Carpet.objects.order_by('id'), start=1):
+    carpets = list(Carpet.objects.order_by('id'))
+    # Two passes: move every row off the target pattern first so the interim
+    # updates can never clash on the unique column, then assign in order.
+    for carpet in carpets:
+        carpet.sku = f'renumber-{carpet.pk}'
+        carpet.save(update_fields=['sku'])
+    for index, carpet in enumerate(carpets, start=1):
         carpet.sku = f'KH-{index:04d}'
         carpet.save(update_fields=['sku'])
-
-
-def noop(apps, schema_editor):
-    pass
 
 
 class Migration(migrations.Migration):
@@ -21,5 +23,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(renumber_skus, noop),
+        # Irreversible: the previous per-carpet SKUs are not recoverable.
+        migrations.RunPython(renumber_skus, migrations.RunPython.noop),
     ]

@@ -1,4 +1,6 @@
-from django.db import models
+from django.db import IntegrityError, models, transaction
+from django.db.models import IntegerField, Max
+from django.db.models.functions import Cast, Substr
 from django.utils.translation import gettext_lazy as _
 
 class Category(models.Model):
@@ -42,19 +44,30 @@ class Carpet(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
-        if not self.sku:
+        if self.sku:
+            return super().save(*args, **kwargs)
+        # Retry on the unique constraint so two concurrent creates cannot keep
+        # the same generated code.
+        for _ in range(5):
             self.sku = self.generate_sku()
-        super().save(*args, **kwargs)
+            try:
+                with transaction.atomic():
+                    return super().save(*args, **kwargs)
+            except IntegrityError:
+                # Only a real SKU collision is retryable; anything else (e.g. a
+                # missing relation) must surface unchanged.
+                if type(self).objects.filter(sku=self.sku).exists():
+                    self.sku = ''
+                    continue
+                raise
+        raise IntegrityError('Could not generate a unique SKU')
 
     @classmethod
     def generate_sku(cls, prefix='KH'):
-        numbers = []
-        for value in cls.objects.filter(sku__startswith=f'{prefix}-').values_list('sku', flat=True):
-            try:
-                numbers.append(int(value.rsplit('-', 1)[-1]))
-            except (ValueError, IndexError):
-                continue
-        return f'{prefix}-{max(numbers, default=0) + 1:04d}'
+        latest = cls.objects.filter(sku__startswith=f'{prefix}-').aggregate(
+            value=Max(Cast(Substr('sku', len(prefix) + 2), output_field=IntegerField()))
+        )['value']
+        return f'{prefix}-{(latest or 0) + 1:04d}'
 
 class CarpetImage(models.Model):
     carpet = models.ForeignKey(Carpet, on_delete=models.CASCADE, related_name='images')

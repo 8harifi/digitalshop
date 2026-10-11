@@ -45,7 +45,7 @@ class CarpetViewSet(viewsets.ModelViewSet):
             return CarpetDetailSerializer
         return CarpetListSerializer
 
-    @action(detail=False, methods=['get'], url_path=r'by-slug/(?P<slug>[-\w]+)')
+    @action(detail=False, methods=['get'], url_path=r'by-slug/(?P<slug>[^/]+)')
     def by_slug(self, request, slug=None):
         carpet = get_object_or_404(self.get_queryset(), slug=slug)
         return Response(CarpetDetailSerializer(carpet, context={'request': request}).data)

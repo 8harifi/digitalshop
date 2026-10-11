@@ -47,7 +47,15 @@ class CarpetDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Carpet
-        fields = '__all__'
+        fields = (
+            'id', 'title', 'title_ar', 'title_fa', 'title_en', 'slug', 'category',
+            'description', 'description_ar', 'description_fa', 'description_en',
+            'origin', 'origin_ar', 'origin_fa', 'origin_en',
+            'material', 'material_ar', 'material_fa', 'material_en',
+            'pattern', 'pattern_ar', 'pattern_fa', 'pattern_en',
+            'price', 'width', 'length', 'knot_density', 'colors', 'stock_status',
+            'sku', 'images',
+        )
 
 
 class CarpetWriteSerializer(serializers.ModelSerializer):

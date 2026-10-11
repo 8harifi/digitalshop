@@ -44,7 +44,10 @@ export default function AdminLoginPage() {
           <h1 className="ad-display" style={{ fontSize: '1.6rem' }}>
             {t('login.title')}
           </h1>
-          <p className="ad-muted" style={{ marginTop: '0.4rem', fontSize: '1rem' }}>
+          <p
+            className="ad-muted"
+            style={{ marginTop: '0.4rem', fontSize: '1rem' }}
+          >
             {t('login.subtitle')}
           </p>
         </div>
@@ -80,7 +83,11 @@ export default function AdminLoginPage() {
 
         {error && <p className="ad-error">{t('login.error')}</p>}
 
-        <button className="ad-btn ad-btn--block" type="submit" disabled={submitting}>
+        <button
+          className="ad-btn ad-btn--block"
+          type="submit"
+          disabled={submitting}
+        >
           {submitting ? t('login.submitting') : t('login.submit')}
         </button>
       </form>

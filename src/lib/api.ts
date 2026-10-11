@@ -1,27 +1,27 @@
-import axios from 'axios';
+import axios from "axios";
 
 export const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
 
-const ACCESS_KEY = 'kh_access';
-const REFRESH_KEY = 'kh_refresh';
+const ACCESS_KEY = "kh_access";
+const REFRESH_KEY = "kh_refresh";
 
 export const tokenStore = {
   get access(): string | null {
-    if (typeof window === 'undefined') return null;
+    if (typeof window === "undefined") return null;
     return window.localStorage.getItem(ACCESS_KEY);
   },
   get refresh(): string | null {
-    if (typeof window === 'undefined') return null;
+    if (typeof window === "undefined") return null;
     return window.localStorage.getItem(REFRESH_KEY);
   },
   set(access: string, refresh?: string | null) {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
     window.localStorage.setItem(ACCESS_KEY, access);
     if (refresh) window.localStorage.setItem(REFRESH_KEY, refresh);
   },
   clear() {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
     window.localStorage.removeItem(ACCESS_KEY);
     window.localStorage.removeItem(REFRESH_KEY);
   },
@@ -32,8 +32,8 @@ const api = axios.create({ baseURL: API_URL });
 api.interceptors.request.use((config) => {
   const token = tokenStore.access;
   if (token) config.headers.Authorization = `Bearer ${token}`;
-  if (typeof document !== 'undefined' && document.documentElement.lang) {
-    config.headers['Accept-Language'] = document.documentElement.lang;
+  if (typeof document !== "undefined" && document.documentElement.lang) {
+    config.headers["Accept-Language"] = document.documentElement.lang;
   }
   return config;
 });
@@ -50,8 +50,8 @@ async function refreshAccessToken(): Promise<string> {
 
 function onUnauthorized() {
   tokenStore.clear();
-  if (typeof window !== 'undefined') {
-    window.dispatchEvent(new Event('kh-unauthorized'));
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new Event("kh-unauthorized"));
   }
 }
 
@@ -92,7 +92,7 @@ export const unwrapList = (data: any): any[] =>
 /* ---------------------------------- Public --------------------------------- */
 
 export const getCarpets = async (params: Record<string, unknown> = {}) => {
-  const response = await api.get('/products/', { params });
+  const response = await api.get("/products/", { params });
   return unwrapList(response.data);
 };
 
@@ -107,30 +107,33 @@ export const getProduct = async (id: number | string) => {
 };
 
 export const getCategories = async () => {
-  const response = await api.get('/categories/');
+  const response = await api.get("/categories/");
   return unwrapList(response.data);
 };
 
 export const submitInquiry = async (data: Record<string, unknown>) => {
-  const response = await api.post('/inquiry/', data);
+  const response = await api.post("/inquiry/", data);
   return response.data;
 };
 
 /* ------------------------------- Auth / stats ------------------------------ */
 
 export const getStats = async () => {
-  const response = await api.get('/stats/');
+  const response = await api.get("/stats/");
   return response.data;
 };
 
 /* -------------------------------- Products -------------------------------- */
 
 export const createProduct = async (data: Record<string, unknown>) => {
-  const response = await api.post('/products/', data);
+  const response = await api.post("/products/", data);
   return response.data;
 };
 
-export const updateProduct = async (id: number | string, data: Record<string, unknown>) => {
+export const updateProduct = async (
+  id: number | string,
+  data: Record<string, unknown>,
+) => {
   const response = await api.put(`/products/${id}/`, data);
   return response.data;
 };
@@ -145,14 +148,16 @@ export const uploadCarpetImage = async (
   isPrimary = false,
 ) => {
   const form = new FormData();
-  form.append('image', file);
-  form.append('is_primary', String(isPrimary));
+  form.append("image", file);
+  form.append("is_primary", String(isPrimary));
   const response = await api.post(`/products/${productId}/images/`, form);
   return response.data;
 };
 
 export const setPrimaryImage = async (imageId: number | string) => {
-  const response = await api.patch(`/carpet-images/${imageId}/`, { is_primary: true });
+  const response = await api.patch(`/carpet-images/${imageId}/`, {
+    is_primary: true,
+  });
   return response.data;
 };
 
@@ -163,11 +168,14 @@ export const deleteCarpetImage = async (imageId: number | string) => {
 /* ------------------------------- Categories ------------------------------- */
 
 export const createCategory = async (data: Record<string, unknown>) => {
-  const response = await api.post('/categories/', data);
+  const response = await api.post("/categories/", data);
   return response.data;
 };
 
-export const updateCategory = async (id: number | string, data: Record<string, unknown>) => {
+export const updateCategory = async (
+  id: number | string,
+  data: Record<string, unknown>,
+) => {
   const response = await api.put(`/categories/${id}/`, data);
   return response.data;
 };
@@ -179,7 +187,7 @@ export const deleteCategory = async (id: number | string) => {
 /* -------------------------------- Inquiries ------------------------------- */
 
 export const getInquiries = async (params: Record<string, unknown> = {}) => {
-  const response = await api.get('/inquiry/', { params });
+  const response = await api.get("/inquiry/", { params });
   return unwrapList(response.data);
 };
 
@@ -190,16 +198,19 @@ export const deleteInquiry = async (id: number | string) => {
 /* ---------------------------------- Users --------------------------------- */
 
 export const getUsers = async (params: Record<string, unknown> = {}) => {
-  const response = await api.get('/users/', { params });
+  const response = await api.get("/users/", { params });
   return unwrapList(response.data);
 };
 
 export const createUser = async (data: Record<string, unknown>) => {
-  const response = await api.post('/users/', data);
+  const response = await api.post("/users/", data);
   return response.data;
 };
 
-export const updateUser = async (id: number | string, data: Record<string, unknown>) => {
+export const updateUser = async (
+  id: number | string,
+  data: Record<string, unknown>,
+) => {
   const response = await api.patch(`/users/${id}/`, data);
   return response.data;
 };

@@ -3,9 +3,9 @@
 import { useRef } from "react";
 import Image from "next/image";
 import { motion, useInView } from "framer-motion";
-import { Link } from '@/i18n/navigation';
-import { useTranslations } from 'next-intl';
-import '@/styles/featured.css';
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
+import "@/styles/featured.css";
 
 type CarpetStory = {
   image: string;
@@ -27,7 +27,7 @@ const carpets: CarpetStory[] = [
 ];
 
 function CarpetChapter({ carpet }: { carpet: CarpetStory }) {
-  const t = useTranslations('Shop');
+  const t = useTranslations("Shop");
   const textRef = useRef<HTMLDivElement>(null);
   const textInView = useInView(textRef, { once: true, amount: 0.1 });
 
@@ -44,8 +44,12 @@ function CarpetChapter({ carpet }: { carpet: CarpetStory }) {
           transition={{ duration: 0.6 }}
           className="mt-10 text-center px-6"
         >
-          <h2 className="fs-display text-4xl sm:text-6xl">{t(carpet.titleKey)}</h2>
-          <p className="fs-muted mt-4 max-w-2xl text-lg sm:text-xl">{t(carpet.descKey)}</p>
+          <h2 className="fs-display text-4xl sm:text-6xl">
+            {t(carpet.titleKey)}
+          </h2>
+          <p className="fs-muted mt-4 max-w-2xl text-lg sm:text-xl">
+            {t(carpet.descKey)}
+          </p>
         </motion.div>
       </div>
     </article>
@@ -53,16 +57,20 @@ function CarpetChapter({ carpet }: { carpet: CarpetStory }) {
 }
 
 export default function FeaturedSection() {
-  const t = useTranslations('Shop');
+  const t = useTranslations("Shop");
 
   return (
     <section className="fs-root min-h-screen bg-olive">
       <div className="py-20 text-center">
-        <h2 className="fs-display text-5xl sm:text-7xl">{t('title')}</h2>
+        <h2 className="fs-display text-5xl sm:text-7xl">{t("title")}</h2>
       </div>
-      {carpets.map((c) => <CarpetChapter key={c.titleKey} carpet={c} />)}
+      {carpets.map((c) => (
+        <CarpetChapter key={c.titleKey} carpet={c} />
+      ))}
       <div className="py-20 text-center">
-        <Link href="/shop" className="fs-cta text-xl">{t('all')}</Link>
+        <Link href="/shop" className="fs-cta text-xl">
+          {t("all")}
+        </Link>
       </div>
     </section>
   );

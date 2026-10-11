@@ -1,4 +1,17 @@
-.fs-root { --fs-gold: #E8D6A3; color: #EFE6DD; }
-.fs-display { font-family: var(--font-AKETAB), serif; }
-.fs-muted { opacity: 0.8; }
-.fs-cta { background: #E8D6A3; color: #2F3B18; padding: 1rem 2.5rem; border-radius: 999px; font-weight: bold; }
+.fs-root {
+  --fs-gold: #e8d6a3;
+  color: #efe6dd;
+}
+.fs-display {
+  font-family: var(--font-AKETAB), serif;
+}
+.fs-muted {
+  opacity: 0.8;
+}
+.fs-cta {
+  background: #e8d6a3;
+  color: #2f3b18;
+  padding: 1rem 2.5rem;
+  border-radius: 999px;
+  font-weight: bold;
+}

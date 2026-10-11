@@ -19,7 +19,9 @@ export default function CheckoutPage() {
   const { items, subtotal, setQty, remove, clear } = useCart();
 
   const [form, setForm] = useState({ name: '', email: '', phone: '' });
-  const [state, setState] = useState<'idle' | 'placing' | 'done' | 'error' | 'invalid'>('idle');
+  const [state, setState] = useState<
+    'idle' | 'placing' | 'done' | 'error' | 'invalid'
+  >('idle');
 
   const image = (src: string | null) =>
     !src ? '' : src.startsWith('http') ? src : `${origin}${src}`;
@@ -33,7 +35,9 @@ export default function CheckoutPage() {
     }
     setState('placing');
     const summary = items
-      .map((i) => `${i.title} ×${i.qty} — ${formatPrice(i.price * i.qty, locale)}`)
+      .map(
+        (i) => `${i.title} ×${i.qty} — ${formatPrice(i.price * i.qty, locale)}`,
+      )
       .join('\n');
     try {
       await submitInquiry({
@@ -62,7 +66,11 @@ export default function CheckoutPage() {
             <p className="pub-muted" style={{ marginTop: '0.6rem' }}>
               {t('successNote')}
             </p>
-            <Link href="/shop" className="pub-btn" style={{ marginTop: '1.5rem' }}>
+            <Link
+              href="/shop"
+              className="pub-btn"
+              style={{ marginTop: '1.5rem' }}
+            >
               {cart('continueShopping')}
             </Link>
           </div>
@@ -82,14 +90,21 @@ export default function CheckoutPage() {
         {items.length === 0 ? (
           <div className="pub-success">
             <p className="pub-muted">{t('emptyCart')}</p>
-            <Link href="/shop" className="pub-btn" style={{ marginTop: '1.25rem' }}>
+            <Link
+              href="/shop"
+              className="pub-btn"
+              style={{ marginTop: '1.25rem' }}
+            >
               {cart('continueShopping')}
             </Link>
           </div>
         ) : (
           <div className="pub-grid-2" style={{ alignItems: 'start' }}>
             <section className="pub-card">
-              <h2 className="pub-display" style={{ fontSize: '1.3rem', marginBottom: '0.5rem' }}>
+              <h2
+                className="pub-display"
+                style={{ fontSize: '1.3rem', marginBottom: '0.5rem' }}
+              >
                 {t('orderSummary')}
               </h2>
               {items.map((item) => (
@@ -108,25 +123,40 @@ export default function CheckoutPage() {
                       {formatPrice(item.price, locale)}
                     </p>
                     <div className="pub-qty">
-                      <button type="button" aria-label={cart('decrease')} onClick={() => setQty(item.id, item.qty - 1)}>
+                      <button
+                        type="button"
+                        aria-label={cart('decrease')}
+                        onClick={() => setQty(item.id, item.qty - 1)}
+                      >
                         −
                       </button>
                       <span>{item.qty}</span>
-                      <button type="button" aria-label={cart('increase')} onClick={() => setQty(item.id, item.qty + 1)}>
+                      <button
+                        type="button"
+                        aria-label={cart('increase')}
+                        onClick={() => setQty(item.id, item.qty + 1)}
+                      >
                         +
                       </button>
                       <button
                         type="button"
                         aria-label={cart('remove')}
                         className="pub-muted"
-                        style={{ border: 'none', background: 'none', cursor: 'pointer', textDecoration: 'underline' }}
+                        style={{
+                          border: 'none',
+                          background: 'none',
+                          cursor: 'pointer',
+                          textDecoration: 'underline',
+                        }}
                         onClick={() => remove(item.id)}
                       >
                         ✕
                       </button>
                     </div>
                   </div>
-                  <div className="pub-gold">{formatPrice(item.price * item.qty, locale)}</div>
+                  <div className="pub-gold">
+                    {formatPrice(item.price * item.qty, locale)}
+                  </div>
                 </div>
               ))}
               <div className="pub-summary-total">
@@ -135,12 +165,18 @@ export default function CheckoutPage() {
               </div>
             </section>
 
-            <form className="pub-card" onSubmit={submit} style={{ display: 'grid', gap: '1rem' }}>
+            <form
+              className="pub-card"
+              onSubmit={submit}
+              style={{ display: 'grid', gap: '1rem' }}
+            >
               <h2 className="pub-display" style={{ fontSize: '1.3rem' }}>
                 {t('contactInfo')}
               </h2>
               <div className="pub-field">
-                <label className="pub-label" htmlFor="checkout-name">{t('name')}</label>
+                <label className="pub-label" htmlFor="checkout-name">
+                  {t('name')}
+                </label>
                 <input
                   id="checkout-name"
                   className="pub-input"
@@ -150,7 +186,9 @@ export default function CheckoutPage() {
                 />
               </div>
               <div className="pub-field">
-                <label className="pub-label" htmlFor="checkout-email">{t('email')}</label>
+                <label className="pub-label" htmlFor="checkout-email">
+                  {t('email')}
+                </label>
                 <input
                   id="checkout-email"
                   type="email"
@@ -161,7 +199,9 @@ export default function CheckoutPage() {
                 />
               </div>
               <div className="pub-field">
-                <label className="pub-label" htmlFor="checkout-phone">{t('phone')}</label>
+                <label className="pub-label" htmlFor="checkout-phone">
+                  {t('phone')}
+                </label>
                 <input
                   id="checkout-phone"
                   className="pub-input"
@@ -170,31 +210,61 @@ export default function CheckoutPage() {
                 />
               </div>
 
-              <h2 className="pub-display" style={{ fontSize: '1.3rem', marginTop: '0.5rem' }}>
+              <h2
+                className="pub-display"
+                style={{ fontSize: '1.3rem', marginTop: '0.5rem' }}
+              >
                 {t('payment')}
               </h2>
               <p className="pub-muted" style={{ fontSize: '0.95rem' }}>
                 {t('testNotice')}
               </p>
               <div className="pub-field">
-                <label className="pub-label" htmlFor="checkout-card">{t('cardNumber')}</label>
-                <input id="checkout-card" className="pub-input" placeholder="4242 4242 4242 4242" disabled />
+                <label className="pub-label" htmlFor="checkout-card">
+                  {t('cardNumber')}
+                </label>
+                <input
+                  id="checkout-card"
+                  className="pub-input"
+                  placeholder="4242 4242 4242 4242"
+                  disabled
+                />
               </div>
               <div className="pub-grid-2">
                 <div className="pub-field">
-                  <label className="pub-label" htmlFor="checkout-expiry">{t('expiry')}</label>
-                  <input id="checkout-expiry" className="pub-input" placeholder="12/34" disabled />
+                  <label className="pub-label" htmlFor="checkout-expiry">
+                    {t('expiry')}
+                  </label>
+                  <input
+                    id="checkout-expiry"
+                    className="pub-input"
+                    placeholder="12/34"
+                    disabled
+                  />
                 </div>
                 <div className="pub-field">
-                  <label className="pub-label" htmlFor="checkout-cvc">{t('cvc')}</label>
-                  <input id="checkout-cvc" className="pub-input" placeholder="123" disabled />
+                  <label className="pub-label" htmlFor="checkout-cvc">
+                    {t('cvc')}
+                  </label>
+                  <input
+                    id="checkout-cvc"
+                    className="pub-input"
+                    placeholder="123"
+                    disabled
+                  />
                 </div>
               </div>
 
-              {state === 'invalid' && <p className="pub-error">{t('required')}</p>}
+              {state === 'invalid' && (
+                <p className="pub-error">{t('required')}</p>
+              )}
               {state === 'error' && <p className="pub-error">{t('error')}</p>}
 
-              <button className="pub-btn pub-btn--block" type="submit" disabled={state === 'placing'}>
+              <button
+                className="pub-btn pub-btn--block"
+                type="submit"
+                disabled={state === 'placing'}
+              >
                 {state === 'placing' ? t('placing') : t('placeOrder')}
               </button>
             </form>

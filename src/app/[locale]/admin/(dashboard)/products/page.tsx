@@ -18,7 +18,8 @@ type Row = {
 };
 
 const origin = API_URL.replace(/\/api\/?$/, '');
-const imgSrc = (path: string) => (path.startsWith('http') ? path : `${origin}${path}`);
+const imgSrc = (path: string) =>
+  path.startsWith('http') ? path : `${origin}${path}`;
 
 export default function AdminProductsPage() {
   const t = useTranslations('Admin');
@@ -80,7 +81,9 @@ export default function AdminProductsPage() {
                 <th scope="col">{t('products.category')}</th>
                 <th scope="col">{t('products.price')}</th>
                 <th scope="col">{t('products.stock')}</th>
-                <th scope="col" style={{ textAlign: 'end' }}>{t('products.actions')}</th>
+                <th scope="col" style={{ textAlign: 'end' }}>
+                  {t('products.actions')}
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -89,14 +92,20 @@ export default function AdminProductsPage() {
                   <td>
                     {row.primary_image ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={imgSrc(row.primary_image)} alt="" className="ad-thumb" />
+                      <img
+                        src={imgSrc(row.primary_image)}
+                        alt=""
+                        className="ad-thumb"
+                      />
                     ) : (
                       <span className="ad-thumb ad-thumb--placeholder">—</span>
                     )}
                   </td>
                   <td>{row.title}</td>
                   <td className="ad-muted">{row.category}</td>
-                  <td className="ad-gold">{Number(row.price).toLocaleString()}</td>
+                  <td className="ad-gold">
+                    {Number(row.price).toLocaleString()}
+                  </td>
                   <td>
                     <span className={`ad-badge ad-badge--${row.stock_status}`}>
                       {row.stock_status}

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   createContext,
@@ -8,7 +8,7 @@ import {
   useMemo,
   useState,
   type ReactNode,
-} from 'react';
+} from "react";
 
 export type CartItem = {
   id: number;
@@ -23,14 +23,14 @@ type CartContextValue = {
   items: CartItem[];
   count: number;
   subtotal: number;
-  add: (item: Omit<CartItem, 'qty'>, qty?: number) => void;
+  add: (item: Omit<CartItem, "qty">, qty?: number) => void;
   remove: (id: number) => void;
   setQty: (id: number, qty: number) => void;
   clear: () => void;
 };
 
 const CartContext = createContext<CartContextValue | null>(null);
-const STORAGE_KEY = 'kh_cart';
+const STORAGE_KEY = "kh_cart";
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
@@ -51,11 +51,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
   }, [items, ready]);
 
-  const add = useCallback((item: Omit<CartItem, 'qty'>, qty = 1) => {
+  const add = useCallback((item: Omit<CartItem, "qty">, qty = 1) => {
     setItems((prev) => {
       const existing = prev.find((i) => i.id === item.id);
       if (existing) {
-        return prev.map((i) => (i.id === item.id ? { ...i, qty: i.qty + qty } : i));
+        return prev.map((i) =>
+          i.id === item.id ? { ...i, qty: i.qty + qty } : i,
+        );
       }
       return [...prev, { ...item, qty }];
     });
@@ -86,6 +88,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
 export function useCart() {
   const ctx = useContext(CartContext);
-  if (!ctx) throw new Error('useCart must be used inside <CartProvider>');
+  if (!ctx) throw new Error("useCart must be used inside <CartProvider>");
   return ctx;
 }

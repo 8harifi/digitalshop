@@ -73,7 +73,9 @@ export default function AdminInquiriesPage() {
                   <th scope="col">{t('inquiries.phone')}</th>
                   <th scope="col">{t('inquiries.carpet')}</th>
                   <th scope="col">{t('inquiries.date')}</th>
-                  <th scope="col" style={{ textAlign: 'end' }}>{t('inquiries.actions')}</th>
+                  <th scope="col" style={{ textAlign: 'end' }}>
+                    {t('inquiries.actions')}
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -115,9 +117,18 @@ export default function AdminInquiriesPage() {
       </section>
 
       {viewing && (
-        <div className="ad-modal" role="dialog" aria-modal="true" aria-label={viewing.name} onClick={() => setViewing(null)}>
+        <div
+          className="ad-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-label={viewing.name}
+          onClick={() => setViewing(null)}
+        >
           <div className="ad-modal__panel" onClick={(e) => e.stopPropagation()}>
-            <h3 className="ad-card__title ad-display" style={{ marginBottom: '1rem' }}>
+            <h3
+              className="ad-card__title ad-display"
+              style={{ marginBottom: '1rem' }}
+            >
               {viewing.name}
             </h3>
             <dl style={{ display: 'grid', gap: '0.6rem' }}>
@@ -139,7 +150,11 @@ export default function AdminInquiriesPage() {
               </div>
             </dl>
             <div className="ad-form-actions" style={{ marginTop: '1.25rem' }}>
-              <button type="button" className="ad-btn" onClick={() => setViewing(null)}>
+              <button
+                type="button"
+                className="ad-btn"
+                onClick={() => setViewing(null)}
+              >
                 {t('common.back')}
               </button>
             </div>

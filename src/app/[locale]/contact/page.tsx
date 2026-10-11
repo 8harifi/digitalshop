@@ -15,8 +15,15 @@ function ContactInner() {
   const carpetPk = carpetId && /^\d+$/.test(carpetId) ? Number(carpetId) : null;
 
   const [carpetName, setCarpetName] = useState<string | null>(null);
-  const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
-  const [state, setState] = useState<'idle' | 'sending' | 'done' | 'error' | 'invalid'>('idle');
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: '',
+  });
+  const [state, setState] = useState<
+    'idle' | 'sending' | 'done' | 'error' | 'invalid'
+  >('idle');
 
   useEffect(() => {
     if (carpetPk === null) return;
@@ -73,10 +80,16 @@ function ContactInner() {
             </button>
           </div>
         ) : (
-          <form className="pub-card" onSubmit={submit} style={{ display: 'grid', gap: '1rem' }}>
+          <form
+            className="pub-card"
+            onSubmit={submit}
+            style={{ display: 'grid', gap: '1rem' }}
+          >
             <div className="pub-grid-2">
               <div className="pub-field">
-                <label className="pub-label" htmlFor="contact-name">{t('name')}</label>
+                <label className="pub-label" htmlFor="contact-name">
+                  {t('name')}
+                </label>
                 <input
                   id="contact-name"
                   className="pub-input"
@@ -86,7 +99,9 @@ function ContactInner() {
                 />
               </div>
               <div className="pub-field">
-                <label className="pub-label" htmlFor="contact-email">{t('email')}</label>
+                <label className="pub-label" htmlFor="contact-email">
+                  {t('email')}
+                </label>
                 <input
                   id="contact-email"
                   type="email"
@@ -97,7 +112,9 @@ function ContactInner() {
                 />
               </div>
               <div className="pub-field">
-                <label className="pub-label" htmlFor="contact-phone">{t('phone')}</label>
+                <label className="pub-label" htmlFor="contact-phone">
+                  {t('phone')}
+                </label>
                 <input
                   id="contact-phone"
                   className="pub-input"
@@ -107,12 +124,18 @@ function ContactInner() {
               </div>
               <div className="pub-field">
                 <label className="pub-label">{t('subject')}</label>
-                <input className="pub-input" value={carpetName ?? t('general')} readOnly />
+                <input
+                  className="pub-input"
+                  value={carpetName ?? t('general')}
+                  readOnly
+                />
               </div>
             </div>
 
             <div className="pub-field">
-              <label className="pub-label" htmlFor="contact-message">{t('message')}</label>
+              <label className="pub-label" htmlFor="contact-message">
+                {t('message')}
+              </label>
               <textarea
                 id="contact-message"
                 className="pub-textarea"
@@ -122,10 +145,16 @@ function ContactInner() {
               />
             </div>
 
-            {state === 'invalid' && <p className="pub-error">{t('required')}</p>}
+            {state === 'invalid' && (
+              <p className="pub-error">{t('required')}</p>
+            )}
             {state === 'error' && <p className="pub-error">{t('error')}</p>}
 
-            <button className="pub-btn" type="submit" disabled={state === 'sending'}>
+            <button
+              className="pub-btn"
+              type="submit"
+              disabled={state === 'sending'}
+            >
               {state === 'sending' ? t('sending') : t('submit')}
             </button>
           </form>

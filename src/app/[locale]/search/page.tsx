@@ -20,7 +20,8 @@ type Rug = {
 };
 
 const origin = API_URL.replace(/\/api\/?$/, '');
-const imgSrc = (path: string) => (path.startsWith('http') ? path : `${origin}${path}`);
+const imgSrc = (path: string) =>
+  path.startsWith('http') ? path : `${origin}${path}`;
 
 function SearchInner() {
   const t = useTranslations('Search');
@@ -78,7 +79,11 @@ function SearchInner() {
           <p className="pub-hero__sub">{t('subtitle')}</p>
         </div>
 
-        <form onSubmit={submit} className="pub-card" style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+        <form
+          onSubmit={submit}
+          className="pub-card"
+          style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}
+        >
           <input
             className="pub-input"
             style={{ flex: 1 }}
@@ -93,19 +98,31 @@ function SearchInner() {
 
         <div style={{ marginTop: '1.5rem' }}>
           {loading ? (
-            <p className="pub-muted" style={{ textAlign: 'center', padding: '3rem 0' }}>
+            <p
+              className="pub-muted"
+              style={{ textAlign: 'center', padding: '3rem 0' }}
+            >
               {ct('loading')}
             </p>
           ) : errored ? (
-            <p className="pub-error" style={{ textAlign: 'center', padding: '3rem 0' }}>
+            <p
+              className="pub-error"
+              style={{ textAlign: 'center', padding: '3rem 0' }}
+            >
               {t('error')}
             </p>
           ) : !searched ? (
-            <p className="pub-muted" style={{ textAlign: 'center', padding: '2rem 0' }}>
+            <p
+              className="pub-muted"
+              style={{ textAlign: 'center', padding: '2rem 0' }}
+            >
               {t('hint')}
             </p>
           ) : results.length === 0 ? (
-            <p className="pub-muted" style={{ textAlign: 'center', padding: '3rem 0' }}>
+            <p
+              className="pub-muted"
+              style={{ textAlign: 'center', padding: '3rem 0' }}
+            >
               {t('noResults')}
             </p>
           ) : (
@@ -115,7 +132,11 @@ function SearchInner() {
               </p>
               <div className="pub-results">
                 {results.map((rug) => (
-                  <Link key={rug.id} href={`/shop/${rug.slug}`} className="pub-rug">
+                  <Link
+                    key={rug.id}
+                    href={`/shop/${rug.slug}`}
+                    className="pub-rug"
+                  >
                     <div className="pub-rug__media">
                       {rug.primary_image ? (
                         // eslint-disable-next-line @next/next/no-img-element
@@ -125,13 +146,19 @@ function SearchInner() {
                       )}
                     </div>
                     <div className="pub-rug__body">
-                      <h3 className="pub-display" style={{ fontSize: '1.2rem' }}>
+                      <h3
+                        className="pub-display"
+                        style={{ fontSize: '1.2rem' }}
+                      >
                         {rug.title}
                       </h3>
                       <p className="pub-muted" style={{ fontSize: '0.95rem' }}>
                         {rug.origin}
                       </p>
-                      <p className="pub-rug__price" style={{ marginTop: '0.5rem' }}>
+                      <p
+                        className="pub-rug__price"
+                        style={{ marginTop: '0.5rem' }}
+                      >
                         {formatPrice(rug.price, locale)}
                       </p>
                     </div>

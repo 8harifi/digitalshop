@@ -111,7 +111,9 @@ export default function AdminCategoriesPage() {
                   <th scope="col">FA</th>
                   <th scope="col">EN</th>
                   <th scope="col">{t('categories.slug')}</th>
-                  <th scope="col" style={{ textAlign: 'end' }}>{t('categories.actions')}</th>
+                  <th scope="col" style={{ textAlign: 'end' }}>
+                    {t('categories.actions')}
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -150,9 +152,24 @@ export default function AdminCategoriesPage() {
       </section>
 
       {editing && (
-        <div className="ad-modal" role="dialog" aria-modal="true" aria-label={editing === 'new' ? t('categories.new') : t('categories.edit')} onClick={() => setEditing(null)}>
-          <form className="ad-modal__panel" onClick={(e) => e.stopPropagation()} onSubmit={save}>
-            <h3 className="ad-card__title ad-display" style={{ marginBottom: '1rem' }}>
+        <div
+          className="ad-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-label={
+            editing === 'new' ? t('categories.new') : t('categories.edit')
+          }
+          onClick={() => setEditing(null)}
+        >
+          <form
+            className="ad-modal__panel"
+            onClick={(e) => e.stopPropagation()}
+            onSubmit={save}
+          >
+            <h3
+              className="ad-card__title ad-display"
+              style={{ marginBottom: '1rem' }}
+            >
               {editing === 'new' ? t('categories.new') : t('categories.edit')}
             </h3>
             <div className="ad-grid-2">
@@ -161,7 +178,9 @@ export default function AdminCategoriesPage() {
                 <input
                   className="ad-input"
                   value={form.name_ar}
-                  onChange={(e) => setForm({ ...form, name_ar: e.target.value })}
+                  onChange={(e) =>
+                    setForm({ ...form, name_ar: e.target.value })
+                  }
                   required
                 />
               </div>
@@ -170,7 +189,9 @@ export default function AdminCategoriesPage() {
                 <input
                   className="ad-input"
                   value={form.name_fa}
-                  onChange={(e) => setForm({ ...form, name_fa: e.target.value })}
+                  onChange={(e) =>
+                    setForm({ ...form, name_fa: e.target.value })
+                  }
                 />
               </div>
               <div className="ad-field">
@@ -178,7 +199,9 @@ export default function AdminCategoriesPage() {
                 <input
                   className="ad-input"
                   value={form.name_en}
-                  onChange={(e) => setForm({ ...form, name_en: e.target.value })}
+                  onChange={(e) =>
+                    setForm({ ...form, name_en: e.target.value })
+                  }
                 />
               </div>
               <div className="ad-field">
@@ -195,7 +218,11 @@ export default function AdminCategoriesPage() {
               <button className="ad-btn" type="submit" disabled={saving}>
                 {saving ? t('categories.saving') : t('categories.save')}
               </button>
-              <button type="button" className="ad-btn ad-btn--ghost" onClick={() => setEditing(null)}>
+              <button
+                type="button"
+                className="ad-btn ad-btn--ghost"
+                onClick={() => setEditing(null)}
+              >
                 {t('common.cancel')}
               </button>
             </div>

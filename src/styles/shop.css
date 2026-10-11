@@ -1,18 +1,26 @@
 .fs-root {
-  --fs-background: #2F3B18;
-  --fs-background-deep: #232C12;
-  --fs-primary: #EFE6DD;
+  --fs-background: #2f3b18;
+  --fs-background-deep: #232c12;
+  --fs-primary: #efe6dd;
   --fs-muted-foreground: rgba(239, 230, 221, 0.92);
-  --fs-muted-gold: #E8D6A3;
-  --fs-gold: #E8D6A3;
+  --fs-muted-gold: #e8d6a3;
+  --fs-gold: #e8d6a3;
   --fs-gold-soft: rgba(232, 214, 163, 0.35);
   --fs-border: rgba(232, 214, 163, 0.32);
-  --fs-olive: #2F3B18;
-  --fs-olive-deep: #232C12;
+  --fs-olive: #2f3b18;
+  --fs-olive-deep: #232c12;
 
   background:
-    radial-gradient(ellipse 130% 90% at 50% 0%, rgba(47, 59, 24, 0.9), transparent 72%),
-    linear-gradient(180deg, var(--fs-background) 0%, var(--fs-background-deep) 100%);
+    radial-gradient(
+      ellipse 130% 90% at 50% 0%,
+      rgba(47, 59, 24, 0.9),
+      transparent 72%
+    ),
+    linear-gradient(
+      180deg,
+      var(--fs-background) 0%,
+      var(--fs-background-deep) 100%
+    );
   color: var(--fs-primary);
   font-family: var(--font-AKETAB), var(--font-cinzel), Georgia, serif;
   font-size: clamp(1.15rem, 1.1rem + 0.5vw, 1.55rem);
@@ -25,16 +33,29 @@
   color: var(--fs-primary);
 }
 
-.fs-muted { color: var(--fs-muted-foreground); }
-.fs-muted-gold { color: var(--fs-muted-gold); }
+.fs-muted {
+  color: var(--fs-muted-foreground);
+}
+.fs-muted-gold {
+  color: var(--fs-muted-gold);
+}
 
 .fs-intro {
   background-image:
     linear-gradient(var(--fs-border), var(--fs-border)),
-    linear-gradient(90deg, transparent 49.8%, var(--fs-border) 50%, transparent 50.2%);
-  background-position: center bottom, center;
+    linear-gradient(
+      90deg,
+      transparent 49.8%,
+      var(--fs-border) 50%,
+      transparent 50.2%
+    );
+  background-position:
+    center bottom,
+    center;
   background-repeat: no-repeat;
-  background-size: min(72vw, 34rem) 1px, 100% 34%;
+  background-size:
+    min(72vw, 34rem) 1px,
+    100% 34%;
 }
 
 .fs-mark {
@@ -61,7 +82,11 @@
   inset-inline-start: clamp(1.1rem, 3vw, 3rem);
   width: 2px;
   height: 100%;
-  background: linear-gradient(180deg, var(--fs-gold) 0%, var(--fs-gold-soft) 100%);
+  background: linear-gradient(
+    180deg,
+    var(--fs-gold) 0%,
+    var(--fs-gold-soft) 100%
+  );
   transform-origin: top;
   box-shadow: 0 0 12px rgba(232, 214, 163, 0.5);
   z-index: 5;
@@ -121,7 +146,11 @@
 .fs-card__veil {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, transparent 55%, rgba(35, 44, 18, 0.9) 100%);
+  background: linear-gradient(
+    180deg,
+    transparent 55%,
+    rgba(35, 44, 18, 0.9) 100%
+  );
   pointer-events: none;
 }
 
@@ -134,7 +163,12 @@
   bottom: 0;
   inset-inline: 1.25rem;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--fs-gold) 50%, transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--fs-gold) 50%,
+    transparent
+  );
   transform: scaleX(0);
   transition: transform 0.5s ease;
 }

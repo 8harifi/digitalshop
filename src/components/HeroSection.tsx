@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { motion, type Variants } from "framer-motion";
-import { useTranslations } from 'next-intl';
+import { useTranslations } from "next-intl";
 
 const heroRug = "/images/pic1.jpg";
 
@@ -73,7 +73,7 @@ function GeometricOrnament({
 }
 
 export default function HeroSection(): React.JSX.Element {
-  const t = useTranslations('Common');
+  const t = useTranslations("Common");
 
   return (
     <section
@@ -100,7 +100,7 @@ export default function HeroSection(): React.JSX.Element {
           >
             <Image
               src={heroRug}
-              alt={t('title')}
+              alt={t("title")}
               fill
               priority
               sizes="100vw"
@@ -136,7 +136,7 @@ export default function HeroSection(): React.JSX.Element {
                 className="max-w-5xl text-4xl font-medium leading-[1.45] tracking-[0.02em] sm:text-5xl md:text-6xl lg:text-7xl"
                 style={{ color: CREAM }}
               >
-                {t('title')}
+                {t("title")}
               </motion.h2>
 
               <motion.p
@@ -144,7 +144,7 @@ export default function HeroSection(): React.JSX.Element {
                 className="mt-6 max-w-4xl text-base font-light leading-relaxed tracking-wide sm:text-lg md:text-xl"
                 style={{ color: "rgba(245, 235, 220, 0.9)" }}
               >
-                {t('description')}
+                {t("description")}
               </motion.p>
             </motion.div>
           </div>

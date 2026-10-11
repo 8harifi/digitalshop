@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import axios from 'axios';
+import axios from "axios";
 import {
   createContext,
   useCallback,
@@ -8,9 +8,9 @@ import {
   useEffect,
   useState,
   type ReactNode,
-} from 'react';
+} from "react";
 
-import api, { API_URL, tokenStore } from './api';
+import api, { API_URL, tokenStore } from "./api";
 
 export type AdminUser = {
   id: number;
@@ -45,7 +45,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return;
       }
       try {
-        const { data } = await api.get('/me/');
+        const { data } = await api.get("/me/");
         if (active) setUser(data);
       } catch {
         tokenStore.clear();
@@ -56,17 +56,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     bootstrap();
 
     const onUnauthorized = () => setUser(null);
-    window.addEventListener('kh-unauthorized', onUnauthorized);
+    window.addEventListener("kh-unauthorized", onUnauthorized);
     return () => {
       active = false;
-      window.removeEventListener('kh-unauthorized', onUnauthorized);
+      window.removeEventListener("kh-unauthorized", onUnauthorized);
     };
   }, []);
 
   const login = useCallback(async (username: string, password: string) => {
-    const { data } = await axios.post(`${API_URL}/token/`, { username, password });
+    const { data } = await axios.post(`${API_URL}/token/`, {
+      username,
+      password,
+    });
     tokenStore.set(data.access, data.refresh);
-    const me = await api.get('/me/');
+    const me = await api.get("/me/");
     setUser(me.data);
     return me.data as AdminUser;
   }, []);
@@ -85,6 +88,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 export function useAuth() {
   const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error('useAuth must be used inside <AuthProvider>');
+  if (!ctx) throw new Error("useAuth must be used inside <AuthProvider>");
   return ctx;
 }

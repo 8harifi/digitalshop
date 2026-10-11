@@ -4,7 +4,9 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
-import ProductForm, { type ProductInitial } from '@/components/admin/ProductForm';
+import ProductForm, {
+  type ProductInitial,
+} from '@/components/admin/ProductForm';
 import { getProduct } from '@/lib/api';
 
 export default function EditProductPage() {

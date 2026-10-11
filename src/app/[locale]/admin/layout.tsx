@@ -6,9 +6,7 @@ import { AuthProvider } from '@/lib/auth';
 export default function AdminLayout({ children }: { children: ReactNode }) {
   return (
     <AuthProvider>
-      <div className="ad-root">
-        {children}
-      </div>
+      <div className="ad-root">{children}</div>
     </AuthProvider>
   );
 }

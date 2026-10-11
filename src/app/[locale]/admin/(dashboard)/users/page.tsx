@@ -61,7 +61,9 @@ export default function AdminUsersPage() {
 
   const toggle = async (row: AdminUser) => {
     const updated = await updateUser(row.id, { is_active: !row.is_active });
-    setRows((prev) => prev.map((r) => (r.id === row.id ? { ...r, ...updated } : r)));
+    setRows((prev) =>
+      prev.map((r) => (r.id === row.id ? { ...r, ...updated } : r)),
+    );
   };
 
   const remove = async (id: number) => {
@@ -75,7 +77,11 @@ export default function AdminUsersPage() {
       <section className="ad-card">
         <div className="ad-card__head">
           <h3 className="ad-card__title ad-display">{t('users.title')}</h3>
-          <button type="button" className="ad-btn ad-btn--sm" onClick={() => setCreating(true)}>
+          <button
+            type="button"
+            className="ad-btn ad-btn--sm"
+            onClick={() => setCreating(true)}
+          >
             <Plus size={15} />
             {t('users.new')}
           </button>
@@ -95,7 +101,9 @@ export default function AdminUsersPage() {
                   <th scope="col">{t('users.staff')}</th>
                   <th scope="col">{t('users.active')}</th>
                   <th scope="col">{t('users.lastLogin')}</th>
-                  <th scope="col" style={{ textAlign: 'end' }}>{t('users.actions')}</th>
+                  <th scope="col" style={{ textAlign: 'end' }}>
+                    {t('users.actions')}
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -105,9 +113,13 @@ export default function AdminUsersPage() {
                     <td className="ad-muted">{row.email}</td>
                     <td>
                       {row.is_superuser ? (
-                        <span className="ad-badge ad-badge--staff">{t('users.superuser')}</span>
+                        <span className="ad-badge ad-badge--staff">
+                          {t('users.superuser')}
+                        </span>
                       ) : row.is_staff ? (
-                        <span className="ad-badge ad-badge--staff">{t('users.staff')}</span>
+                        <span className="ad-badge ad-badge--staff">
+                          {t('users.staff')}
+                        </span>
                       ) : (
                         '—'
                       )}
@@ -126,7 +138,9 @@ export default function AdminUsersPage() {
                       </button>
                     </td>
                     <td className="ad-muted">
-                      {row.last_login ? new Date(row.last_login).toLocaleDateString() : '—'}
+                      {row.last_login
+                        ? new Date(row.last_login).toLocaleDateString()
+                        : '—'}
                     </td>
                     <td>
                       <div className="ad-table__row-actions">
@@ -150,24 +164,43 @@ export default function AdminUsersPage() {
       </section>
 
       {creating && (
-        <div className="ad-modal" role="dialog" aria-modal="true" aria-label={t('users.create')} onClick={() => setCreating(false)}>
-          <form className="ad-modal__panel" onClick={(e) => e.stopPropagation()} onSubmit={create}>
-            <h3 className="ad-card__title ad-display" style={{ marginBottom: '1rem' }}>
+        <div
+          className="ad-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-label={t('users.create')}
+          onClick={() => setCreating(false)}
+        >
+          <form
+            className="ad-modal__panel"
+            onClick={(e) => e.stopPropagation()}
+            onSubmit={create}
+          >
+            <h3
+              className="ad-card__title ad-display"
+              style={{ marginBottom: '1rem' }}
+            >
               {t('users.create')}
             </h3>
             <div className="ad-grid-2">
               <div className="ad-field">
-                <label className="ad-label" htmlFor="new-user-username">{t('users.username')}</label>
+                <label className="ad-label" htmlFor="new-user-username">
+                  {t('users.username')}
+                </label>
                 <input
                   id="new-user-username"
                   className="ad-input"
                   value={form.username}
-                  onChange={(e) => setForm({ ...form, username: e.target.value })}
+                  onChange={(e) =>
+                    setForm({ ...form, username: e.target.value })
+                  }
                   required
                 />
               </div>
               <div className="ad-field">
-                <label className="ad-label" htmlFor="new-user-email">{t('users.email')}</label>
+                <label className="ad-label" htmlFor="new-user-email">
+                  {t('users.email')}
+                </label>
                 <input
                   id="new-user-email"
                   type="email"
@@ -177,34 +210,50 @@ export default function AdminUsersPage() {
                 />
               </div>
               <div className="ad-field">
-                <label className="ad-label" htmlFor="new-user-password">{t('users.password')}</label>
+                <label className="ad-label" htmlFor="new-user-password">
+                  {t('users.password')}
+                </label>
                 <input
                   id="new-user-password"
                   type="password"
                   className="ad-input"
                   value={form.password}
-                  onChange={(e) => setForm({ ...form, password: e.target.value })}
+                  onChange={(e) =>
+                    setForm({ ...form, password: e.target.value })
+                  }
                 />
               </div>
               <div className="ad-field">
-                <label className="ad-label" htmlFor="new-user-staff">{t('users.staff')}</label>
+                <label className="ad-label" htmlFor="new-user-staff">
+                  {t('users.staff')}
+                </label>
                 <select
                   id="new-user-staff"
                   className="ad-select"
                   value={String(form.is_staff)}
-                  onChange={(e) => setForm({ ...form, is_staff: e.target.value === 'true' })}
+                  onChange={(e) =>
+                    setForm({ ...form, is_staff: e.target.value === 'true' })
+                  }
                 >
                   <option value="true">{t('common.yes')}</option>
                   <option value="false">{t('common.no')}</option>
                 </select>
               </div>
             </div>
-            {error && <p className="ad-error" style={{ marginTop: '0.75rem' }}>{t('common.error')}</p>}
+            {error && (
+              <p className="ad-error" style={{ marginTop: '0.75rem' }}>
+                {t('common.error')}
+              </p>
+            )}
             <div className="ad-form-actions" style={{ marginTop: '1.25rem' }}>
               <button className="ad-btn" type="submit" disabled={saving}>
                 {saving ? t('users.saving') : t('users.save')}
               </button>
-              <button type="button" className="ad-btn ad-btn--ghost" onClick={() => setCreating(false)}>
+              <button
+                type="button"
+                className="ad-btn ad-btn--ghost"
+                onClick={() => setCreating(false)}
+              >
                 {t('common.cancel')}
               </button>
             </div>

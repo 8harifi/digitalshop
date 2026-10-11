@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import '@/styles/line-banner.css';
+import "@/styles/line-banner.css";
 
 export default function LineBanner(): React.JSX.Element {
   return (

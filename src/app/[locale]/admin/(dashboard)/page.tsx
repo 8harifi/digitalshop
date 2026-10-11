@@ -40,7 +40,11 @@ export default function AdminOverviewPage() {
   if (!stats) return <div className="ad-loading">{t('common.loading')}</div>;
 
   const cards = [
-    { label: t('overview.carpets'), value: stats.carpets, sub: `${stats.available} ${t('overview.available')}` },
+    {
+      label: t('overview.carpets'),
+      value: stats.carpets,
+      sub: `${stats.available} ${t('overview.available')}`,
+    },
     { label: t('overview.available'), value: stats.available },
     { label: t('overview.reserved'), value: stats.reserved },
     { label: t('overview.sold'), value: stats.sold },
@@ -72,7 +76,9 @@ export default function AdminOverviewPage() {
 
       <section className="ad-card">
         <div className="ad-card__head">
-          <h3 className="ad-card__title ad-display">{t('overview.recentInquiries')}</h3>
+          <h3 className="ad-card__title ad-display">
+            {t('overview.recentInquiries')}
+          </h3>
         </div>
         {stats.recent_inquiries.length === 0 ? (
           <div className="ad-empty">{t('overview.noInquiries')}</div>

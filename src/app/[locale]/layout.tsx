@@ -1,5 +1,9 @@
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
+import {
+  getMessages,
+  getTranslations,
+  setRequestLocale,
+} from 'next-intl/server';
 import { locales, getDir } from '@/i18n/config';
 import { CartProvider } from '@/lib/cart';
 import { notFound } from 'next/navigation';
@@ -63,20 +67,52 @@ const Miremad = localFont({
 });
 const cormorant = localFont({
   src: [
-    { path: '../../../public/fonts/cormorant-garamond-latin-400-normal.woff2', weight: '400', style: 'normal' },
-    { path: '../../../public/fonts/cormorant-garamond-latin-500-normal.woff2', weight: '500', style: 'normal' },
-    { path: '../../../public/fonts/cormorant-garamond-latin-600-normal.woff2', weight: '600', style: 'normal' },
-    { path: '../../../public/fonts/cormorant-garamond-latin-700-normal.woff2', weight: '700', style: 'normal' },
+    {
+      path: '../../../public/fonts/cormorant-garamond-latin-400-normal.woff2',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: '../../../public/fonts/cormorant-garamond-latin-500-normal.woff2',
+      weight: '500',
+      style: 'normal',
+    },
+    {
+      path: '../../../public/fonts/cormorant-garamond-latin-600-normal.woff2',
+      weight: '600',
+      style: 'normal',
+    },
+    {
+      path: '../../../public/fonts/cormorant-garamond-latin-700-normal.woff2',
+      weight: '700',
+      style: 'normal',
+    },
   ],
   variable: '--font-display',
   display: 'swap',
 });
 const cinzel = localFont({
   src: [
-    { path: '../../../public/fonts/cinzel-latin-400-normal.woff2', weight: '400', style: 'normal' },
-    { path: '../../../public/fonts/cinzel-latin-500-normal.woff2', weight: '500', style: 'normal' },
-    { path: '../../../public/fonts/cinzel-latin-600-normal.woff2', weight: '600', style: 'normal' },
-    { path: '../../../public/fonts/cinzel-latin-700-normal.woff2', weight: '700', style: 'normal' },
+    {
+      path: '../../../public/fonts/cinzel-latin-400-normal.woff2',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: '../../../public/fonts/cinzel-latin-500-normal.woff2',
+      weight: '500',
+      style: 'normal',
+    },
+    {
+      path: '../../../public/fonts/cinzel-latin-600-normal.woff2',
+      weight: '600',
+      style: 'normal',
+    },
+    {
+      path: '../../../public/fonts/cinzel-latin-700-normal.woff2',
+      weight: '700',
+      style: 'normal',
+    },
   ],
   variable: '--font-cinzel',
   display: 'swap',
@@ -104,7 +140,7 @@ export async function generateMetadata({
 
 export default async function LocaleLayout({
   children,
-  params
+  params,
 }: {
   children: React.ReactNode;
   params: Promise<{ locale: string }>;

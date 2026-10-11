@@ -4,8 +4,8 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, Search, X, Globe } from "lucide-react";
 import Image from "next/image";
-import { useLocale, useTranslations } from 'next-intl';
-import { Link, usePathname, useRouter } from '@/i18n/navigation';
+import { useLocale, useTranslations } from "next-intl";
+import { Link, usePathname, useRouter } from "@/i18n/navigation";
 
 const CREAM = "#F5EBDC";
 const CREAM_SOFT = "#F5EBDC";
@@ -15,25 +15,27 @@ const BURGUNDY_DEEP = "#4A0F1C";
 export default function Header(): React.JSX.Element {
   const [menuOpen, setMenuOpen] = useState(false);
   const locale = useLocale();
-  const t = useTranslations('Common');
+  const t = useTranslations("Common");
   const pathname = usePathname();
   const router = useRouter();
 
   const navItems = [
-    { href: "/", label: t('home') },
-    { href: "/shop", label: t('shop') },
-    { href: "/contact", label: t('contact') },
+    { href: "/", label: t("home") },
+    { href: "/shop", label: t("shop") },
+    { href: "/contact", label: t("contact") },
   ];
 
   const languages = [
-    { code: 'ar', name: 'العربية' },
-    { code: 'fa', name: 'فارسی' },
-    { code: 'en', name: 'English' },
+    { code: "ar", name: "العربية" },
+    { code: "fa", name: "فارسی" },
+    { code: "en", name: "English" },
   ];
 
   const handleLanguageChange = (newLocale: string) => {
-    const query = typeof window !== 'undefined' ? window.location.search : '';
-    router.replace(`${pathname}${query}`, { locale: newLocale as 'ar' | 'fa' | 'en' });
+    const query = typeof window !== "undefined" ? window.location.search : "";
+    router.replace(`${pathname}${query}`, {
+      locale: newLocale as "ar" | "fa" | "en",
+    });
   };
 
   const linkStyle = { color: BURGUNDY };
@@ -56,7 +58,7 @@ export default function Header(): React.JSX.Element {
         <button
           type="button"
           className="p-1 lg:hidden text-[#6B1F2E]"
-          aria-label={menuOpen ? t('closeMenu') : t('openMenu')}
+          aria-label={menuOpen ? t("closeMenu") : t("openMenu")}
           onClick={() => setMenuOpen((v) => !v)}
         >
           {menuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -70,8 +72,12 @@ export default function Header(): React.JSX.Element {
               href={item.href}
               className="text-xl font-medium uppercase tracking-[0.1em] transition-colors"
               style={linkStyle}
-              onMouseEnter={(e) => (e.currentTarget.style.color = linkHover.color)}
-              onMouseLeave={(e) => (e.currentTarget.style.color = linkStyle.color)}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.color = linkHover.color)
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.color = linkStyle.color)
+              }
             >
               {item.label}
             </Link>
@@ -82,7 +88,7 @@ export default function Header(): React.JSX.Element {
         <Link href="/" className="flex items-center justify-center">
           <Image
             src="/assets/toplpgo.png"
-            alt={t('logoAlt')}
+            alt={t("logoAlt")}
             width={180}
             height={80}
             priority
@@ -99,7 +105,7 @@ export default function Header(): React.JSX.Element {
                 key={lang.code}
                 type="button"
                 onClick={() => handleLanguageChange(lang.code)}
-                className={`text-sm font-semibold transition-colors ${locale === lang.code ? 'underline underline-offset-4' : 'opacity-60 hover:opacity-100'}`}
+                className={`text-sm font-semibold transition-colors ${locale === lang.code ? "underline underline-offset-4" : "opacity-60 hover:opacity-100"}`}
                 style={linkStyle}
               >
                 {lang.name}
@@ -111,8 +117,8 @@ export default function Header(): React.JSX.Element {
             type="button"
             className="p-1 transition-colors"
             style={{ color: BURGUNDY }}
-            aria-label={t('search')}
-            onClick={() => router.push('/search')}
+            aria-label={t("search")}
+            onClick={() => router.push("/search")}
             onMouseEnter={(e) => (e.currentTarget.style.color = BURGUNDY_DEEP)}
             onMouseLeave={(e) => (e.currentTarget.style.color = BURGUNDY)}
           >
@@ -124,8 +130,8 @@ export default function Header(): React.JSX.Element {
           type="button"
           className="p-1 lg:hidden"
           style={{ color: BURGUNDY }}
-          aria-label={t('search')}
-          onClick={() => router.push('/search')}
+          aria-label={t("search")}
+          onClick={() => router.push("/search")}
         >
           <Search size={18} strokeWidth={1.6} />
         </button>
@@ -168,7 +174,7 @@ export default function Header(): React.JSX.Element {
                       handleLanguageChange(lang.code);
                       setMenuOpen(false);
                     }}
-                    className={`text-sm font-semibold ${locale === lang.code ? 'underline' : 'opacity-60'}`}
+                    className={`text-sm font-semibold ${locale === lang.code ? "underline" : "opacity-60"}`}
                   >
                     {lang.name}
                   </button>

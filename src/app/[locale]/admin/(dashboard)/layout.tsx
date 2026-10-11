@@ -9,7 +9,7 @@ import {
   Tags,
   Users,
 } from 'lucide-react';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import { useAuth } from '@/lib/auth';
@@ -22,7 +22,11 @@ const NAV = [
   { href: '/admin/users', key: 'users', icon: Users, exact: false },
 ] as const;
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const t = useTranslations('Admin');
   const pathname = usePathname();
   const router = useRouter();
@@ -58,7 +62,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
         <nav className="ad-nav">
           {NAV.map(({ href, key, icon: Icon, exact }) => {
-            const active = exact ? pathname === href : pathname.startsWith(href);
+            const active = exact
+              ? pathname === href
+              : pathname.startsWith(href);
             return (
               <Link
                 key={href}
@@ -76,7 +82,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
             {user.username}
           </span>
-          <button type="button" className="ad-btn ad-btn--ghost ad-btn--sm" onClick={onLogout}>
+          <button
+            type="button"
+            className="ad-btn ad-btn--ghost ad-btn--sm"
+            onClick={onLogout}
+          >
             <LogOut size={15} strokeWidth={1.7} />
             {t('nav.logout')}
           </button>
@@ -85,7 +95,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
       <div className="ad-main">
         <header className="ad-topbar">
-          <h1 className="ad-display ad-topbar__title">{t(`nav.${activeKey}`)}</h1>
+          <h1 className="ad-display ad-topbar__title">
+            {t(`nav.${activeKey}`)}
+          </h1>
           <Link href="/" className="ad-btn ad-btn--ghost ad-btn--sm">
             {t('nav.viewSite')}
           </Link>

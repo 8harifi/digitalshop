@@ -16,7 +16,6 @@ export default function CheckoutPage() {
   const t = useTranslations('Checkout');
   const cart = useTranslations('Cart');
   const locale = useLocale();
-  const dir = locale === 'en' ? 'ltr' : 'rtl';
   const { items, subtotal, setQty, remove, clear } = useCart();
 
   const [form, setForm] = useState({ name: '', email: '', phone: '' });
@@ -53,7 +52,7 @@ export default function CheckoutPage() {
 
   if (state === 'done') {
     return (
-      <main className="pub-root" dir={dir}>
+      <main className="pub-root">
         <Header />
         <div className="pub-wrap">
           <div className="pub-success">
@@ -73,7 +72,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <main className="pub-root" dir={dir}>
+    <main className="pub-root">
       <Header />
       <div className="pub-wrap">
         <div className="pub-hero" style={{ paddingBlock: '2rem 1rem' }}>

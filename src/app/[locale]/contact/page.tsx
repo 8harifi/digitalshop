@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 
 import Header from '@/components/Header';
 import { getProduct, submitInquiry } from '@/lib/api';
@@ -10,8 +10,6 @@ import '@/styles/public.css';
 
 function ContactInner() {
   const t = useTranslations('Contact');
-  const locale = useLocale();
-  const dir = locale === 'en' ? 'ltr' : 'rtl';
   const params = useSearchParams();
   const carpetId = params.get('carpet');
   const carpetPk = carpetId && /^\d+$/.test(carpetId) ? Number(carpetId) : null;
@@ -46,7 +44,7 @@ function ContactInner() {
   };
 
   return (
-    <main className="pub-root" dir={dir}>
+    <main className="pub-root">
       <Header />
       <div className="pub-wrap">
         <div className="pub-hero">

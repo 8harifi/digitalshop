@@ -26,7 +26,6 @@ function SearchInner() {
   const t = useTranslations('Search');
   const ct = useTranslations('Common');
   const locale = useLocale();
-  const dir = locale === 'en' ? 'ltr' : 'rtl';
   const router = useRouter();
   const params = useSearchParams();
   const initialTerm = params.get('search') ?? '';
@@ -71,7 +70,7 @@ function SearchInner() {
   };
 
   return (
-    <main className="pub-root" dir={dir}>
+    <main className="pub-root">
       <Header />
       <div className="pub-wrap">
         <div className="pub-hero">

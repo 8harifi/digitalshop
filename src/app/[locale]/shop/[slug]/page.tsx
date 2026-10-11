@@ -106,7 +106,6 @@ export default function RugDetailPage() {
   const params = useParams<{ slug: string }>();
   const slug = params?.slug;
   const locale = useLocale();
-  const isRTL = locale !== 'en';
   const t = useTranslations('Common');
   const router = useRouter();
   const { add } = useCart();
@@ -156,7 +155,7 @@ export default function RugDetailPage() {
   };
 
   return (
-    <section ref={pageRef} dir={isRTL ? "rtl" : "ltr"} className="fs-root min-h-screen overflow-clip">
+    <section ref={pageRef} className="fs-root min-h-screen overflow-clip">
       <style dangerouslySetInnerHTML={{ __html: styles }} />
       <Header />
 

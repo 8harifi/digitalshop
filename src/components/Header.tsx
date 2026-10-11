@@ -19,8 +19,6 @@ export default function Header(): React.JSX.Element {
   const pathname = usePathname();
   const router = useRouter();
 
-  const isRTL = locale !== 'en';
-
   const navItems = [
     { href: "/", label: t('home') },
     { href: "/shop", label: t('shop') },
@@ -43,7 +41,6 @@ export default function Header(): React.JSX.Element {
 
   return (
     <header
-      dir={isRTL ? "rtl" : "ltr"}
       className="relative z-40 w-full text-[#6B1F2E]"
       style={{
         background: `linear-gradient(180deg, ${CREAM} 0%, ${CREAM_SOFT} 100%)`,

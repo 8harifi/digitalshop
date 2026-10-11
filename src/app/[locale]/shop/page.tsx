@@ -115,7 +115,6 @@ export default function ShopPage() {
   const t = useTranslations('Shop');
   const ct = useTranslations('Common');
   const locale = useLocale();
-  const isRTL = locale !== 'en';
 
   const [carpetsData, setCarpetsData] = useState<Carpet[]>([]);
   const [sortBy, setSortBy] = useState("newest");
@@ -153,7 +152,6 @@ export default function ShopPage() {
   return (
     <section
       ref={sectionRef}
-      dir={isRTL ? "rtl" : "ltr"}
       className="fs-root min-h-screen overflow-clip"
     >
       <style dangerouslySetInnerHTML={{ __html: styles }} />

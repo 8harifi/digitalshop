@@ -1,6 +1,6 @@
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
-import { locales } from '@/i18n/config';
+import { locales, getDir } from '@/i18n/config';
 import { CartProvider } from '@/lib/cart';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
@@ -114,7 +114,7 @@ export default async function LocaleLayout({
 
   setRequestLocale(locale);
   const messages = await getMessages();
-  const dir = locale === 'en' ? 'ltr' : 'rtl';
+  const dir = getDir(locale);
 
   return (
     <html
